@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState, useCallback } from "react";
+import { useScrollEngine } from "../hooks/useScrollEngine";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -1079,6 +1080,124 @@ const PAGE_CSS = `
   will-change: transform;
   transition: transform 0.1s linear;
 }
+
+/* ═══ SCROLL ANIMATIONS ═══ */
+
+/* ─── #1 Lerp Wrapper ─── */
+.sc-lerp-wrapper {
+  will-change: transform;
+}
+
+/* ─── #2 Horizontal Ticker ─── */
+.sc-ticker {
+  width: 100%;
+  overflow: hidden;
+  background: #000;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 22px 0;
+  position: relative;
+}
+.sc-ticker-track {
+  display: flex;
+  gap: 0;
+  white-space: nowrap;
+  will-change: transform;
+}
+.sc-ticker-text {
+  font-family: var(--sc-font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.5em;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.12);
+  flex-shrink: 0;
+  padding-right: 0;
+  user-select: none;
+  line-height: 1;
+}
+
+/* ─── #3 Scale-From-Center (handled via JS inline styles) ─── */
+.sc-prod-card {
+  transform-origin: center center;
+}
+
+/* ─── #4 Sticky Section Title Scrub ─── */
+.sc-sticky-title {
+  position: sticky;
+  top: 24px;
+  z-index: 10;
+  transition: opacity 0.1s linear;
+}
+
+/* ─── #5 Parallax Depth Stack ─── */
+.sc-parallax-section {
+  position: relative;
+  overflow: hidden;
+}
+.sc-parallax-layer-bg {
+  position: absolute;
+  inset: -30% 0;
+  width: 100%;
+  height: 160%;
+  object-fit: cover;
+  transform: translate3d(0, var(--parallax-bg, 0), 0);
+  will-change: transform;
+  pointer-events: none;
+}
+.sc-parallax-layer-mid {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(0, var(--parallax-mid, 0), 0);
+  will-change: transform;
+  pointer-events: none;
+}
+.sc-parallax-layer-fg {
+  position: relative;
+  z-index: 2;
+}
+
+/* ─── #6 Progress Bar ─── */
+.sc-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 1px;
+  width: 0%;
+  background: white;
+  opacity: 0.4;
+  z-index: 10000;
+  pointer-events: none;
+  will-change: width;
+}
+
+/* ─── #7 Velocity Blur Target ─── */
+.sc-blur-target {
+  will-change: filter;
+}
+
+/* ─── Reduced motion overrides ─── */
+@media (prefers-reduced-motion: reduce) {
+  .sc-lerp-wrapper {
+    transform: none !important;
+  }
+  .sc-prod-card {
+    transform: none !important;
+  }
+  .sc-parallax-layer-bg,
+  .sc-parallax-layer-mid {
+    transform: none !important;
+  }
+  .sc-blur-target {
+    filter: none !important;
+  }
+  .sc-ticker-track {
+    animation: tickerIdle 60s linear infinite;
+  }
+  @keyframes tickerIdle {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+}
 `;
 
 /* ─── Unsplash image URLs ─── */
@@ -1139,12 +1258,18 @@ function SocialRow({ size = 18, gap = "16px" }: { size?: number; gap?: string })
 }
 
 /* ─── Main Page Component ─── */
+/* ─── Ticker text content ─── */
+const TICKER_TEXT = "SILENTCODE \u00B7 SS25 \u00B7 SILENCE IS LOUDEST \u00B7 BUILT NOT BOUGHT \u00B7 ACTIONS OVER WORDS \u00B7 ";
+
 function SilentCodePage() {
   const [navOpen, setNavOpen] = useState(false);
   const [openSubs, setOpenSubs] = useState<Record<string, boolean>>({});
   const [emailSubmitted, setEmailSubmitted] = useState(false);
   const [curtainDone, setCurtainDone] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // ─── Activate the scroll engine ───
+  useScrollEngine();
 
   const toggleSub = useCallback((label: string) => {
     setOpenSubs(prev => ({ ...prev, [label]: !prev[label] }));
@@ -1196,13 +1321,6 @@ function SilentCodePage() {
         logo.style.opacity = o;
         burger.style.opacity = o;
       }
-
-      /* Parallax */
-      document.querySelectorAll(".sc-parallax-bg").forEach(el => {
-        const rect = (el as HTMLElement).getBoundingClientRect();
-        const offset = rect.top * 0.2;
-        (el as HTMLElement).style.transform = `translateY(${offset}px)`;
-      });
     };
     window.addEventListener("scroll", onScroll, { passive: true });
 
@@ -1225,11 +1343,17 @@ function SilentCodePage() {
   };
 
   return (
-    <div ref={containerRef}>
+    <>
+      {/* ─── #6 Progress Bar ─── */}
+      <div className="sc-progress-bar" />
+
       {/* ─── Entry Curtain ─── */}
       {!curtainDone && (
         <div id="sc-curtain-el" className="sc-curtain" aria-hidden="true" />
       )}
+
+      {/* ─── Lerp Wrapper + Blur Target ─── */}
+      <div ref={containerRef} className="sc-lerp-wrapper sc-blur-target">
 
       {/* ─── Fixed Logo ─── */}
       <div className="sc-fixed-logo">
@@ -1307,9 +1431,18 @@ function SilentCodePage() {
         </div>
       </section>
 
+      {/* ═══ TICKER STRIP ═══ */}
+      <div className="sc-ticker">
+        <div className="sc-ticker-track">
+          {Array.from({ length: 12 }).map((_, i) => (
+            <span key={i} className="sc-ticker-text">{TICKER_TEXT}</span>
+          ))}
+        </div>
+      </div>
+
       {/* ═══ SECTION 3 — CATEGORIES ═══ */}
       <section className="sc-categories" id="categories">
-        <div className="sc-section-label sc-fade-target" style={{ marginBottom: "50px" }}>SHOP BY CATEGORY</div>
+        <div className="sc-section-label sc-fade-target sc-sticky-title" style={{ marginBottom: "50px" }}>SHOP BY CATEGORY</div>
         <div className="sc-cat-grid">
           {[
             { label: "MEN", cta: "EXPLORE MEN →", img: IMAGES.men },
@@ -1336,7 +1469,7 @@ function SilentCodePage() {
       {/* ═══ SECTION 4 — BEST SELLERS ═══ */}
       <section className="sc-products" id="products">
         <div className="sc-section-label sc-fade-target">MOST WANTED</div>
-        <h2 className="sc-section-h2 sc-fade-target">THE ESSENTIALS</h2>
+        <h2 className="sc-section-h2 sc-fade-target sc-sticky-title">THE ESSENTIALS</h2>
         <p className="sc-section-body sc-fade-target">Our highest-rated, fastest-selling pieces. Updated each season.</p>
         <div className="sc-prod-grid">
           {PRODUCTS.map(p => (
@@ -1364,11 +1497,21 @@ function SilentCodePage() {
         </div>
       </section>
 
+      {/* ═══ TICKER STRIP 2 ═══ */}
+      <div className="sc-ticker">
+        <div className="sc-ticker-track">
+          {Array.from({ length: 12 }).map((_, i) => (
+            <span key={i} className="sc-ticker-text">{TICKER_TEXT}</span>
+          ))}
+        </div>
+      </div>
+
       {/* ═══ SECTION 5 — VALUE PROPOSITION ═══ */}
-      <section className="sc-value" id="value">
-        <img src={IMAGES.fabric} alt="" className="sc-value-bg sc-parallax-bg" aria-hidden="true" />
-        <div className="sc-value-content">
-          <div className="sc-section-label sc-fade-target" style={{ letterSpacing: "0.45em" }}>THE SILENTCODE DIFFERENCE</div>
+      <section className="sc-value sc-parallax-section" id="value">
+        <img src={IMAGES.fabric} alt="" className="sc-parallax-layer-bg" aria-hidden="true" style={{ opacity: 0.08 }} />
+        <div className="sc-parallax-layer-mid" style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.9) 100%)" }} />
+        <div className="sc-value-content sc-parallax-layer-fg">
+          <div className="sc-section-label sc-fade-target sc-sticky-title" style={{ letterSpacing: "0.45em" }}>THE SILENTCODE DIFFERENCE</div>
           <h2 className="sc-value-h2 sc-fade-target">BUILT FOR THOSE WHO PREFER ACTIONS OVER WORDS.</h2>
           <p className="sc-value-body sc-fade-target">
             Every SilentCode piece begins as a sketch on paper — then it becomes a conversation between a fabric supplier,
@@ -1420,9 +1563,10 @@ function SilentCodePage() {
       </section>
 
       {/* ═══ SECTION 7 — EMAIL CAPTURE ═══ */}
-      <section className="sc-email" id="email">
-        <img src={IMAGES.fabric} alt="" className="sc-email-bg sc-parallax-bg" aria-hidden="true" />
-        <div className="sc-email-content">
+      <section className="sc-email sc-parallax-section" id="email">
+        <img src={IMAGES.fabric} alt="" className="sc-parallax-layer-bg" aria-hidden="true" style={{ opacity: 0.05 }} />
+        <div className="sc-parallax-layer-mid" style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.95) 100%)" }} />
+        <div className="sc-email-content sc-parallax-layer-fg">
           <div className="sc-section-label sc-fade-target" style={{ letterSpacing: "0.45em" }}>JOIN THE CLUB</div>
           <h2 className="sc-email-h2 sc-fade-target">FIRST TO KNOW. FIRST TO WEAR.</h2>
           <p className="sc-email-body sc-fade-target">
@@ -1473,6 +1617,7 @@ function SilentCodePage() {
           <button className="sc-footer-top" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>BACK TO TOP ↑</button>
         </div>
       </footer>
-    </div>
+      </div>{/* end .sc-lerp-wrapper */}
+    </>
   );
 }

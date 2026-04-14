@@ -98,6 +98,6 @@
   }
 
   html {
-    scroll-behavior: smooth;
+    /* scroll-behavior removed — handled by sc-lerp scroll engine */
   }
 }
