@@ -1036,6 +1036,38 @@ const PAGE_CSS = `
 }
 .sc-footer-top:hover { color: white; }
 
+/* ─── Entry Curtain ─── */
+@keyframes curtainRise {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-100%); }
+}
+.sc-curtain {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 99999;
+  transform: translateY(0);
+  animation: curtainRise 1.2s cubic-bezier(0.77, 0, 0.175, 1) 0.15s forwards;
+  pointer-events: none;
+}
+.sc-curtain-done {
+  display: none;
+}
+
+/* ─── Product card image swap ─── */
+.sc-prod-img-alt {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 350ms ease;
+}
+.sc-prod-card:hover .sc-prod-img-alt {
+  opacity: 1;
+}
+
 /* ─── Mobile button overrides ─── */
 @media (max-width: 767px) {
   .sc-btn-primary { width: 100%; min-height: 48px; text-align: center; }
@@ -1056,9 +1088,13 @@ const IMAGES = {
   women: "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=800&q=80&auto=format&fit=crop",
   accessories: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80&auto=format&fit=crop",
   product1: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600&q=80&auto=format&fit=crop",
+  product1alt: "https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=600&q=80&auto=format&fit=crop",
   product2: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80&auto=format&fit=crop",
+  product2alt: "https://images.unsplash.com/photo-1552902865-b72c031ac5ea?w=600&q=80&auto=format&fit=crop",
   product3: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=600&q=80&auto=format&fit=crop",
+  product3alt: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&q=80&auto=format&fit=crop",
   product4: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&q=80&auto=format&fit=crop",
+  product4alt: "https://images.unsplash.com/photo-1548126032-079a0fb0099d?w=600&q=80&auto=format&fit=crop",
   fabric: "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=1920&q=80&auto=format&fit=crop",
   ugc1: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&q=80&auto=format&fit=crop",
   ugc2: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80&auto=format&fit=crop",
@@ -1083,10 +1119,10 @@ const NAV_LINKS = [
 ];
 
 const PRODUCTS = [
-  { name: "SILENT HOODIE", sub: "Obsidian / Heavyweight Fleece", price: "$98.00", stars: "★★★★★ 4.9", img: IMAGES.product1 },
-  { name: "CODE TEE", sub: "Ash Grey / 180gsm Cotton", price: "$52.00", stars: "★★★★★ 4.8", img: IMAGES.product2 },
-  { name: "RECON CARGO", sub: "Slate / Ripstop Cotton Blend", price: "$124.00", stars: "★★★★☆ 4.7", img: IMAGES.product3 },
-  { name: "VOID JACKET", sub: "Ink Black / Technical Shell", price: "$210.00", stars: "★★★★★ 4.9", img: IMAGES.product4 },
+  { name: "SILENT HOODIE", sub: "Obsidian / Heavyweight Fleece", price: "$98.00", stars: "★★★★★ 4.9", img: IMAGES.product1, imgAlt: IMAGES.product1alt },
+  { name: "CODE TEE", sub: "Ash Grey / 180gsm Cotton", price: "$52.00", stars: "★★★★★ 4.8", img: IMAGES.product2, imgAlt: IMAGES.product2alt },
+  { name: "RECON CARGO", sub: "Slate / Ripstop Cotton Blend", price: "$124.00", stars: "★★★★☆ 4.7", img: IMAGES.product3, imgAlt: IMAGES.product3alt },
+  { name: "VOID JACKET", sub: "Ink Black / Technical Shell", price: "$210.00", stars: "★★★★★ 4.9", img: IMAGES.product4, imgAlt: IMAGES.product4alt },
 ];
 
 /* ─── Social Links Row ─── */
@@ -1107,6 +1143,7 @@ function SilentCodePage() {
   const [navOpen, setNavOpen] = useState(false);
   const [openSubs, setOpenSubs] = useState<Record<string, boolean>>({});
   const [emailSubmitted, setEmailSubmitted] = useState(false);
+  const [curtainDone, setCurtainDone] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const toggleSub = useCallback((label: string) => {
@@ -1118,6 +1155,15 @@ function SilentCodePage() {
     setTimeout(() => {
       document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     }, 100);
+  }, []);
+
+  useEffect(() => {
+    const curtain = document.getElementById("sc-curtain-el");
+    if (curtain) {
+      const onEnd = () => setCurtainDone(true);
+      curtain.addEventListener("animationend", onEnd);
+      return () => curtain.removeEventListener("animationend", onEnd);
+    }
   }, []);
 
   useEffect(() => {
@@ -1180,6 +1226,11 @@ function SilentCodePage() {
 
   return (
     <div ref={containerRef}>
+      {/* ─── Entry Curtain ─── */}
+      {!curtainDone && (
+        <div id="sc-curtain-el" className="sc-curtain" aria-hidden="true" />
+      )}
+
       {/* ─── Fixed Logo ─── */}
       <div className="sc-fixed-logo">
         <SilentCodeLogo />
@@ -1292,6 +1343,7 @@ function SilentCodePage() {
             <div key={p.name} className="sc-prod-card sc-fade-target">
               <div className="sc-prod-img-wrap">
                 <img src={p.img} alt={p.name} loading="lazy" />
+                <img src={p.imgAlt} alt={`${p.name} worn`} loading="lazy" className="sc-prod-img-alt" />
                 <button className="sc-prod-add-btn">ADD TO BAG</button>
               </div>
               <div className="sc-prod-info">
