@@ -94,6 +94,11 @@
   --sc-border-light: #333333;
   --sc-font-heading: 'Josefin Sans', sans-serif;
   --sc-font-body: 'PT Sans', sans-serif;
+  /* Glassmorphism System */
+  --sc-glass-bg: rgba(10, 10, 10, 0.7);
+  --sc-glass-bg-hover: rgba(20, 20, 20, 0.85);
+  --sc-glass-border: 1px solid rgba(255, 255, 255, 0.08);
+  --sc-glass-blur: blur(20px);
 }
 
 @layer base {
@@ -116,6 +121,14 @@
 
   .font-body {
     font-family: var(--sc-font-body);
+  }
+
+  /* Glassmorphic Utility */
+  .sc-glass {
+    background: var(--sc-glass-bg);
+    backdrop-filter: var(--sc-glass-blur);
+    -webkit-backdrop-filter: var(--sc-glass-blur);
+    border: var(--sc-glass-border);
   }
 }
 
@@ -180,8 +193,16 @@
   z-index: 9999;
   opacity: 0.92;
   animation: fadeInNav 0.5s ease 0.5s both;
-  transition: opacity 0.3s ease;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  padding: 8px 16px;
 }
+.sc-fixed-logo:hover {
+  background: var(--sc-glass-bg);
+  backdrop-filter: var(--sc-glass-blur);
+  border: var(--sc-glass-border);
+  opacity: 1;
+}
+
 .sc-fixed-hamburger {
   position: fixed;
   top: 30px;
@@ -189,15 +210,20 @@
   z-index: 9999;
   cursor: pointer;
   background: none;
-  border: none;
+  border: 1px solid transparent;
   padding: 8px;
   animation: fadeInNav 0.5s ease 0.5s both;
-  transition: opacity 0.3s ease;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
   min-width: 44px;
   min-height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.sc-fixed-hamburger:hover {
+  background: var(--sc-glass-bg);
+  backdrop-filter: var(--sc-glass-blur);
+  border-color: rgba(255,255,255,0.1);
 }
 .sc-hamburger-line {
   display: block;
@@ -236,9 +262,10 @@
   left: 0;
   width: 380px;
   height: 100%;
-  background: rgba(0,0,0,0.97);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: var(--sc-glass-bg);
+  backdrop-filter: var(--sc-glass-blur);
+  -webkit-backdrop-filter: var(--sc-glass-blur);
+  border-right: var(--sc-glass-border);
   z-index: 10001;
   transform: translateX(-100%);
   transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);

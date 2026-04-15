@@ -8,12 +8,12 @@ export function ScarcityIndicator({ status }: ScarcityIndicatorProps) {
   const config = {
     "low-stock": {
       label: "LOW STOCK",
-      className: "bg-red-600 text-white shadow-[0_0_15px_rgba(220,0,0,0.4)]",
+      className: "sc-glass bg-red-900/30 text-red-200 border-red-500/40 backdrop-blur-xl",
       pulse: "animate-[sc-low-box-pulse_2s_infinite]"
     },
     "sold-out": {
       label: "SOLD OUT",
-      className: "bg-neutral-800 text-white/50",
+      className: "sc-glass bg-neutral-900/60 text-white/30 backdrop-blur-xl grayscale",
       pulse: ""
     }
   };

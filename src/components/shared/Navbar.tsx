@@ -109,17 +109,15 @@ export function Navbar() {
             </div>
           ))}
         </div>
-        <div className="sc-nav-footer">
-          <div className="sc-nav-socials">
-            <div style={{ display: "flex", gap: "16px" }}>
-              <a href="#" aria-label="Instagram"><InstagramIcon size={18} /></a>
-              <a href="#" aria-label="TikTok"><TikTokIcon size={18} /></a>
-              <a href="#" aria-label="Pinterest"><PinterestIcon size={18} /></a>
-              <a href="#" aria-label="X"><XIcon size={18} /></a>
-              <a href="#" aria-label="YouTube"><YouTubeIcon size={18} /></a>
-            </div>
+        <div className="sc-nav-footer p-10 border-t border-white/5 sc-glass bg-white/5 backdrop-blur-md">
+          <div className="sc-nav-socials flex gap-4 mb-8">
+            <a href="#" className="sc-glass bg-white/5 hover:bg-white/10 w-10 h-10 flex items-center justify-center border-white/5 rounded-full" aria-label="Instagram"><InstagramIcon size={18} /></a>
+            <a href="#" className="sc-glass bg-white/5 hover:bg-white/10 w-10 h-10 flex items-center justify-center border-white/5 rounded-full" aria-label="TikTok"><TikTokIcon size={18} /></a>
+            <a href="#" className="sc-glass bg-white/5 hover:bg-white/10 w-10 h-10 flex items-center justify-center border-white/5 rounded-full" aria-label="Pinterest"><PinterestIcon size={18} /></a>
+            <a href="#" className="sc-glass bg-white/5 hover:bg-white/10 w-10 h-10 flex items-center justify-center border-white/5 rounded-full" aria-label="X"><XIcon size={18} /></a>
+            <a href="#" className="sc-glass bg-white/5 hover:bg-white/10 w-10 h-10 flex items-center justify-center border-white/5 rounded-full" aria-label="YouTube"><YouTubeIcon size={18} /></a>
           </div>
-          <div className="sc-nav-copyright">© 2026 SilentCode Studio — All rights reserved</div>
+          <div className="sc-nav-copyright text-[10px] text-white/30 tracking-widest uppercase opacity-70">© 2026 SilentCode Studio — All rights reserved</div>
         </div>
       </nav>
     </>

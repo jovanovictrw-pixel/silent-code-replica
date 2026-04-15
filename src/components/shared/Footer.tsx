@@ -45,7 +45,9 @@ export function Footer() {
       <div className="sc-footer-divider" />
       <div className="sc-footer-bottom">
         <div className="sc-footer-copy">© 2026 SILENTCODE STUDIO — BUILT NOT BOUGHT.</div>
-        <button className="sc-footer-top" onClick={scrollToTop}>BACK TO TOP ↑</button>
+        <button className="sc-footer-top sc-glass bg-white/5 hover:bg-white/10 text-white/60 hover:text-white border-white/5 backdrop-blur-md px-6 py-3 text-[10px] tracking-[0.2em]" onClick={scrollToTop}>
+          BACK TO TOP ↑
+        </button>
       </div>
     </footer>
   );

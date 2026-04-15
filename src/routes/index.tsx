@@ -20,24 +20,24 @@ export const Route = createFileRoute("/")({
 /* ─── Content Helpers ─── */
 const TICKER_TEXT = "SILENTCODE \u00B7 SS25 \u00B7 SILENCE IS LOUDEST \u00B7 BUILT NOT BOUGHT \u00B7 ACTIONS OVER WORDS \u00B7 ";
 const IMAGES = {
-  hero: "https://images.unsplash.com/photo-1523398002811-999ca8dec234?q=85&fm=webp&fit=crop",
-  men: "https://images.unsplash.com/photo-1617137968427-85924c800a22?w=800&q=80&fm=webp&fit=crop",
-  women: "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=800&q=80&fm=webp&fit=crop",
-  accessories: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80&fm=webp&fit=crop",
-  product1: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600&q=80&fm=webp&fit=crop",
-  product1alt: "https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=600&q=80&fm=webp&fit=crop",
-  product2: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80&fm=webp&fit=crop",
-  product2alt: "https://images.unsplash.com/photo-1552902865-b72c031ac5ea?w=600&q=80&fm=webp&fit=crop",
-  product3: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=600&q=80&fm=webp&fit=crop",
-  product3alt: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&q=80&fm=webp&fit=crop",
-  product4: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&q=80&fm=webp&fit=crop",
-  product4alt: "https://images.unsplash.com/photo-1548126032-079a0fb0099d?w=600&q=80&fm=webp&fit=crop",
-  fabric: "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=1920&q=80&fm=webp&fit=crop",
-  ugc1: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&q=80&fm=webp&fit=crop",
-  ugc2: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80&fm=webp&fit=crop",
-  ugc3: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=600&q=80&fm=webp&fit=crop",
-  ugc4: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=600&q=80&fm=webp&fit=crop",
-  ugc5: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600&q=80&fm=webp&fit=crop",
+  hero: "https://images.unsplash.com/photo-1523398002811-999ca8dec234?q=85&auto=format&fit=crop",
+  men: "https://images.unsplash.com/photo-1617137968427-85924c800a22?w=800&q=80&auto=format&fit=crop",
+  women: "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=800&q=80&auto=format&fit=crop",
+  accessories: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80&auto=format&fit=crop",
+  product1: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600&q=80&auto=format&fit=crop",
+  product1alt: "https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=600&q=80&auto=format&fit=crop",
+  product2: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80&auto=format&fit=crop",
+  product2alt: "https://images.unsplash.com/photo-1552902865-b72c031ac5ea?w=600&q=80&auto=format&fit=crop",
+  product3: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=600&q=80&auto=format&fit=crop",
+  product3alt: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&q=80&auto=format&fit=crop",
+  product4: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&q=80&auto=format&fit=crop",
+  product4alt: "https://images.unsplash.com/photo-1548126032-079a0fb0099d?w=600&q=80&auto=format&fit=crop",
+  fabric: "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=1920&q=80&auto=format&fit=crop",
+  ugc1: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&q=80&auto=format&fit=crop",
+  ugc2: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80&auto=format&fit=crop",
+  ugc3: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=600&q=80&auto=format&fit=crop",
+  ugc4: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=600&q=80&auto=format&fit=crop",
+  ugc5: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600&q=80&auto=format&fit=crop",
 };
 
 const PRODUCTS = [
@@ -117,12 +117,12 @@ function SilentCodePage() {
             <div className="sc-hero-line" />
             <div className="sc-hero-sublabel">SS 2025 COLLECTION</div>
             <h1 className="sc-hero-h1 vt-heading">SILENCE IS THE LOUDEST STATEMENT.</h1>
-            <div style={{ marginTop: "40px" }}>
-              <button className="sc-btn-primary" onClick={() => scrollToSection("products")}>SHOP NEW ARRIVALS</button>
-            </div>
-            <div style={{ marginTop: "20px" }}>
-              <button className="sc-link-secondary" onClick={() => scrollToSection("email")}>
-                GET 15% OFF YOUR FIRST ORDER →
+            <div style={{ marginTop: "40px" }} className="flex flex-col md:flex-row gap-4 justify-center items-center">
+              <button className="sc-btn-primary sc-glass bg-white/10 hover:bg-white/20 text-white border-white/20 backdrop-blur-xl px-12" onClick={() => scrollToSection("products")}>
+                SHOP NEW ARRIVALS
+              </button>
+              <button className="sc-btn-primary bg-white text-black px-12" onClick={() => scrollToSection("categories")}>
+                COLLECTIONS
               </button>
             </div>
           </div>
@@ -133,7 +133,7 @@ function SilentCodePage() {
         </section>
 
         {/* ═══ TICKER STRIP ═══ */}
-        <div className="sc-ticker">
+        <div className="sc-ticker sc-glass border-l-0 border-r-0 border-white/5 py-4">
           <div className="sc-ticker-track">
             {Array.from({ length: 12 }).map((_, i) => (
               <span key={i} className="sc-ticker-text">{TICKER_TEXT}</span>
@@ -143,19 +143,19 @@ function SilentCodePage() {
 
         {/* ═══ SECTION 3 — CATEGORIES ═══ */}
         <section className="sc-categories" id="categories">
-          <div className="sc-section-label sc-fade-target sc-sticky-title" style={{ marginBottom: "50px" }}>SHOP BY CATEGORY</div>
+          <div className="sc-section-label sc-sticky-title" style={{ marginBottom: "50px" }}>SHOP BY CATEGORY</div>
           <div className="sc-cat-grid">
             {[
               { label: "MEN", cta: "EXPLORE MEN →", img: IMAGES.men, href: "/category/men" },
               { label: "WOMEN", cta: "EXPLORE WOMEN →", img: IMAGES.women, href: "/category/women" },
               { label: "ACCESSORIES", cta: "EXPLORE ACCESSORIES →", img: IMAGES.accessories, href: "/category/accessories" },
             ].map(cat => (
-              <Link to={cat.href as any} key={cat.label} className="sc-cat-tile sc-fade-target">
-                <img src={cat.img} alt={cat.label} loading="lazy" />
-                <div className="sc-cat-overlay" />
-                <div className="sc-cat-content">
-                  <div className="sc-cat-label">{cat.label}</div>
-                  <span className="sc-cat-cta">{cat.cta}</span>
+              <Link to={cat.href as any} key={cat.label} className="sc-cat-tile sc-fade-target group block relative">
+                <img src={cat.img} alt={cat.label} loading="lazy" className="w-full h-full object-cover" />
+                <div className="sc-cat-overlay bg-black/20 group-hover:bg-black/40 transition-all duration-700" />
+                <div className="sc-cat-content sc-glass bg-white/5 backdrop-blur-xl border-white/10 p-8 absolute bottom-10 left-10 right-10 md:left-auto md:w-64 z-10 transition-all duration-500 group-hover:bg-white/10">
+                  <div className="sc-cat-label text-white !mb-4">{cat.label}</div>
+                  <span className="sc-cat-cta text-white/50 group-hover:text-white transition-colors">{cat.cta}</span>
                 </div>
               </Link>
             ))}
@@ -274,12 +274,22 @@ function SilentCodePage() {
               Sign up for early access to new drops, exclusive member discounts, and behind-the-scenes content from the studio.
             </p>
             {!emailSubmitted ? (
-              <form className="sc-email-row sc-fade-target" onSubmit={handleEmailSubmit}>
-                <input type="email" className="sc-email-input" placeholder="Your email address" required />
-                <button type="submit" className="sc-email-submit">GET EARLY ACCESS</button>
+              <form className="sc-email-row sc-fade-target max-w-lg mx-auto" onSubmit={handleEmailSubmit}>
+                <input 
+                  type="email" 
+                  className="sc-email-input sc-glass bg-white/5 border-white/10 text-white placeholder:text-white/30 px-6 py-4 focus:bg-white/10 transition-all outline-none" 
+                  placeholder="Your email address" 
+                  required 
+                />
+                <button 
+                  type="submit" 
+                  className="sc-email-submit sc-glass bg-white text-black hover:bg-white/90 border-none font-bold tracking-widest px-8"
+                >
+                  GET EARLY ACCESS
+                </button>
               </form>
             ) : (
-              <div className="sc-email-confirm" style={{ marginTop: "44px" }}>
+              <div className="sc-email-confirm sc-glass bg-white/10 backdrop-blur-xl border-white/20 p-8 text-center" style={{ marginTop: "44px" }}>
                 YOU'RE IN. WELCOME TO THE CLUB.
               </div>
             )}

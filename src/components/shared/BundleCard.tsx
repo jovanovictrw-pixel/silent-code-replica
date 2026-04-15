@@ -70,14 +70,14 @@ export function BundleCard({ product }: BundleCardProps) {
 
         {/* Technical Overlays */}
         <div className="absolute top-6 left-6 z-20">
-          <div className="bg-white text-black text-[9px] px-3 py-1 tracking-[0.4em] font-black uppercase skew-x-[-12deg]">
+          <div className="sc-glass bg-white/5 text-white text-[9px] px-4 py-1.5 tracking-[0.4em] font-black uppercase skew-x-[-12deg] backdrop-blur-md">
             <span className="inline-block skew-x-[12deg]">SYSTEM.KIT</span>
           </div>
         </div>
 
         <div className="absolute top-6 right-6 z-20">
            {badge?.label && (
-            <div className={`${badge.className} text-[9px] px-3 py-1 tracking-[0.4em] font-black uppercase skew-x-[-12deg] shadow-2xl`}>
+            <div className={`${badge.className} sc-glass bg-white/10 text-[9px] px-4 py-1.5 tracking-[0.4em] font-black uppercase skew-x-[-12deg] shadow-2xl backdrop-blur-md border-white/5`}>
               <span className="inline-block skew-x-[12deg]">{badge.label}</span>
             </div>
            )}
