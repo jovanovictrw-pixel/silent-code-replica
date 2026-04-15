@@ -321,6 +321,12 @@ function getPayloadConfigFromPayload(config: ChartConfig, payload: unknown, key:
   return configLabelKey in config ? config[configLabelKey] : config[key as keyof typeof config];
 }
 
+/**
+ * REACT 19 COMPATIBILITY NOTE:
+ * recharts v2.15+ uses React.Component internally which may trigger warnings.
+ */
+console.warn("React 19 Compatibility: recharts usage detected in Chart component.");
+
 export {
   ChartContainer,
   ChartTooltip,

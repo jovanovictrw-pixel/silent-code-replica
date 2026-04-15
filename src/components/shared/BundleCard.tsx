@@ -28,16 +28,18 @@ export function BundleCard({ product }: BundleCardProps) {
   const badge = badgeConfig[product.id as keyof typeof badgeConfig];
 
   return (
-    <div className="sc-prod-card sc-fade-target group border border-white/10 bg-[#050505] overflow-hidden flex flex-col">
+    <div className="sc-prod-card vt-card sc-fade-target group border border-white/10 bg-[#050505] overflow-hidden flex flex-col relative">
       {/* Editorial Image Grid */}
       <div className="relative h-[520px] w-full grid grid-cols-2 gap-[1px] bg-[#111] overflow-hidden">
         {/* Left Column: Primary Editorial/Model Shot */}
         <div className="relative overflow-hidden bg-black flex items-center justify-center">
           <img 
-            src={product.image} 
+            src={`${product.image}${product.image.includes('?') ? '&' : '?'}fm=webp&q=80&w=800`}
+            srcSet={`${product.image}${product.image.includes('?') ? '&' : '?'}fm=webp&q=80&w=400 400w, ${product.image}${product.image.includes('?') ? '&' : '?'}fm=webp&q=80&w=800 800w`}
+            sizes="(max-width: 768px) 50vw, 25vw"
             alt="Editorial Shot"
             className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-105"
-            onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?auto=format&fit=crop&q=80&w=800'; }}
+            onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?fm=webp&q=80&w=800'; }}
           />
         </div>
         
@@ -46,10 +48,10 @@ export function BundleCard({ product }: BundleCardProps) {
           {/* Top/Full Right Shot */}
           <div className={`${isStreetArmor ? 'row-span-2' : ''} relative overflow-hidden bg-black flex items-center justify-center`}>
             <img 
-              src={product.gridImages?.[0] || 'https://images.unsplash.com/photo-1544441892-0b310433e147?auto=format&fit=crop&q=80&w=800'} 
+              src={`${product.gridImages?.[0] || 'https://images.unsplash.com/photo-1544441892-0b310433e147?auto=format&fit=crop&q=80&w=800'}${ (product.gridImages?.[0] || '').includes('?') ? '&' : '?'}fm=webp&q=80&w=800`}
               alt="Detail Shot 1"
               className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110"
-              onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1544441892-0b310433e147?auto=format&fit=crop&q=80&w=800'; }}
+              onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1544441892-0b310433e147?fm=webp&q=80&w=800'; }}
             />
           </div>
           
@@ -57,10 +59,10 @@ export function BundleCard({ product }: BundleCardProps) {
           {!isStreetArmor && (
             <div className="relative overflow-hidden bg-black flex items-center justify-center">
               <img 
-                src={product.gridImages?.[1] || 'https://images.unsplash.com/photo-1621252179027-94459d278660?auto=format&fit=crop&q=80&w=800'} 
+                src={`${product.gridImages?.[1] || 'https://images.unsplash.com/photo-1621252179027-94459d278660?auto=format&fit=crop&q=80&w=800'}${ (product.gridImages?.[1] || '').includes('?') ? '&' : '?'}fm=webp&q=80&w=800`}
                 alt="Detail Shot 2"
                 className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110"
-                onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1621252179027-94459d278660?auto=format&fit=crop&q=80&w=800'; }}
+                onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1621252179027-94459d278660?fm=webp&q=80&w=800'; }}
               />
             </div>
           )}

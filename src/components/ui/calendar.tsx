@@ -7,6 +7,13 @@ import { DayButton, DayPicker, getDefaultClassNames } from "react-day-picker";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 
+/**
+ * REACT 19 COMPATIBILITY NOTE:
+ * react-day-picker v9 may have API deprecations in React 19.
+ * Monitor for act() warnings and class component usage.
+ */
+console.warn("React 19 Compatibility: react-day-picker usage detected in Calendar component. Monitor for deprecations.");
+
 function Calendar({
   className,
   classNames,

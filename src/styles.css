@@ -144,6 +144,34 @@
   transform: translateY(0);
 }
 
+/* ─── View Transitions ─── */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.vt-hero { view-transition-name: hero-image; }
+.vt-heading { view-transition-name: page-heading; }
+.vt-card { view-transition-name: product-card; }
+
+@keyframes slide-from-right {
+  from { transform: translateX(30px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slide-to-left {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(-30px); opacity: 0; }
+}
+
+::view-transition-old(page-heading) {
+  animation: 0.3s cubic-bezier(0.4, 0, 0.2, 1) both slide-to-left;
+}
+::view-transition-new(page-heading) {
+  animation: 0.5s cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
+}
+
 /* ─── Fixed Nav Elements ─── */
 .sc-fixed-logo {
   position: fixed;

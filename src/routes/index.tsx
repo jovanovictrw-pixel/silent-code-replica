@@ -20,24 +20,24 @@ export const Route = createFileRoute("/")({
 /* ─── Content Helpers ─── */
 const TICKER_TEXT = "SILENTCODE \u00B7 SS25 \u00B7 SILENCE IS LOUDEST \u00B7 BUILT NOT BOUGHT \u00B7 ACTIONS OVER WORDS \u00B7 ";
 const IMAGES = {
-  hero: "https://images.unsplash.com/photo-1523398002811-999ca8dec234?w=1920&q=80&auto=format&fit=crop",
-  men: "https://images.unsplash.com/photo-1617137968427-85924c800a22?w=800&q=80&auto=format&fit=crop",
-  women: "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=800&q=80&auto=format&fit=crop",
-  accessories: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80&auto=format&fit=crop",
-  product1: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600&q=80&auto=format&fit=crop",
-  product1alt: "https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=600&q=80&auto=format&fit=crop",
-  product2: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80&auto=format&fit=crop",
-  product2alt: "https://images.unsplash.com/photo-1552902865-b72c031ac5ea?w=600&q=80&auto=format&fit=crop",
-  product3: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=600&q=80&auto=format&fit=crop",
-  product3alt: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&q=80&auto=format&fit=crop",
-  product4: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&q=80&auto=format&fit=crop",
-  product4alt: "https://images.unsplash.com/photo-1548126032-079a0fb0099d?w=600&q=80&auto=format&fit=crop",
-  fabric: "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=1920&q=80&auto=format&fit=crop",
-  ugc1: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&q=80&auto=format&fit=crop",
-  ugc2: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80&auto=format&fit=crop",
-  ugc3: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=600&q=80&auto=format&fit=crop",
-  ugc4: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=600&q=80&auto=format&fit=crop",
-  ugc5: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600&q=80&auto=format&fit=crop",
+  hero: "https://images.unsplash.com/photo-1523398002811-999ca8dec234?q=85&fm=webp&fit=crop",
+  men: "https://images.unsplash.com/photo-1617137968427-85924c800a22?w=800&q=80&fm=webp&fit=crop",
+  women: "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=800&q=80&fm=webp&fit=crop",
+  accessories: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80&fm=webp&fit=crop",
+  product1: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600&q=80&fm=webp&fit=crop",
+  product1alt: "https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=600&q=80&fm=webp&fit=crop",
+  product2: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80&fm=webp&fit=crop",
+  product2alt: "https://images.unsplash.com/photo-1552902865-b72c031ac5ea?w=600&q=80&fm=webp&fit=crop",
+  product3: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=600&q=80&fm=webp&fit=crop",
+  product3alt: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&q=80&fm=webp&fit=crop",
+  product4: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&q=80&fm=webp&fit=crop",
+  product4alt: "https://images.unsplash.com/photo-1548126032-079a0fb0099d?w=600&q=80&fm=webp&fit=crop",
+  fabric: "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=1920&q=80&fm=webp&fit=crop",
+  ugc1: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&q=80&fm=webp&fit=crop",
+  ugc2: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80&fm=webp&fit=crop",
+  ugc3: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=600&q=80&fm=webp&fit=crop",
+  ugc4: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=600&q=80&fm=webp&fit=crop",
+  ugc5: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600&q=80&fm=webp&fit=crop",
 };
 
 const PRODUCTS = [
@@ -105,12 +105,18 @@ function SilentCodePage() {
       <div ref={containerRef} className="sc-lerp-wrapper sc-blur-target">
         {/* ═══ SECTION 2 — HERO ═══ */}
         <section className="sc-hero" id="hero">
-          <img src={IMAGES.hero} alt="Dark fashion editorial" className="sc-hero-bg" />
+          <img 
+            src={`${IMAGES.hero}&fm=webp&q=85&w=1920`} 
+            srcSet={`${IMAGES.hero}&fm=webp&q=85&w=800 800w, ${IMAGES.hero}&fm=webp&q=85&w=1200 1200w, ${IMAGES.hero}&fm=webp&q=85&w=1920 1920w`}
+            sizes="100vw"
+            alt="Dark fashion editorial" 
+            className="sc-hero-bg vt-hero" 
+          />
           <div className="sc-hero-overlay" />
           <div className="sc-hero-content">
             <div className="sc-hero-line" />
             <div className="sc-hero-sublabel">SS 2025 COLLECTION</div>
-            <h1 className="sc-hero-h1">SILENCE IS THE LOUDEST STATEMENT.</h1>
+            <h1 className="sc-hero-h1 vt-heading">SILENCE IS THE LOUDEST STATEMENT.</h1>
             <div style={{ marginTop: "40px" }}>
               <button className="sc-btn-primary" onClick={() => scrollToSection("products")}>SHOP NEW ARRIVALS</button>
             </div>

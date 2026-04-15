@@ -69,7 +69,9 @@ export function Navbar() {
             <SilentCodeLogo size="small" />
           </Link>
         </div>
-        <div className="sc-nav-links">
+        
+        {/* Mobile reachability: Push links to bottom 60% on small screens */}
+        <div className="sc-nav-links flex flex-col justify-end flex-grow pb-12 overflow-y-auto">
           {NAV_LINKS.map(link => (
             <div key={link.label}>
               {link.href.startsWith("http") || link.href.startsWith("#") ? (

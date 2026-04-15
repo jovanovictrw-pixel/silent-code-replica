@@ -26,7 +26,7 @@ export function CategoryLayout({ children, title, subtitle }: CategoryLayoutProp
           ← BACK TO HOME
         </Link>
         <div className="w-12 h-px bg-white/30 mx-auto mb-8" />
-        <h1 className="font-heading text-4xl md:text-6xl tracking-[0.2em] font-light uppercase mb-6">
+        <h1 className="font-heading text-4xl md:text-6xl tracking-[0.2em] font-light uppercase mb-6 vt-heading">
           {title}
         </h1>
         {subtitle && (

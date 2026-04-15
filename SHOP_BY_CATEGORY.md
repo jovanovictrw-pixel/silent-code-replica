@@ -79,6 +79,7 @@ To maximize revenue per visit, we will implement:
 ### Phase 1: Imagery Asset Generation
 - Generate AI images for each item using the `generate_image` tool.
 - Assets must follow a consistent lighting (cold, high-contrast) and background (concrete, dark studio).
+- **Optimization Strategy**: All imagery must be served in next-gen formats (WebP/AVIF). Implement responsive `srcset` with widths at 400w, 800w, and 1200w. Ensure `sizes` attributes reflect the brutalist grid columns (e.g., `(max-width: 768px) 100vw, 33vw`). Use `loading="lazy"` for all below-the-fold assets.
 
 ### Phase 2: Route & Layout Setup
 - Create `src/routes/category/$categoryName.tsx`.

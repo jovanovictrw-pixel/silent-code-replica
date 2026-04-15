@@ -5,6 +5,12 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
+/**
+ * REACT 19 COMPATIBILITY NOTE:
+ * embla-carousel-react may trigger act() warnings in future concurrent modes.
+ */
+console.warn("React 19 Compatibility: embla-carousel-react usage detected in Carousel component.");
+
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
 type CarouselOptions = UseCarouselParameters[0];
