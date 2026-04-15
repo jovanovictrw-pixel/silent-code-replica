@@ -218,7 +218,7 @@ const PAGE_CSS = `
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.6);
-  z-index: 9990;
+  z-index: 10000;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.4s ease;
@@ -234,7 +234,7 @@ const PAGE_CSS = `
   background: rgba(0,0,0,0.97);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  z-index: 9995;
+  z-index: 10001;
   transform: translateX(-100%);
   transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
   overflow-y: auto;
@@ -1165,7 +1165,7 @@ const PAGE_CSS = `
   width: 0%;
   background: white;
   opacity: 0.4;
-  z-index: 10000;
+  z-index: 9998;
   pointer-events: none;
   will-change: width;
 }
@@ -1352,11 +1352,8 @@ function SilentCodePage() {
         <div id="sc-curtain-el" className="sc-curtain" aria-hidden="true" />
       )}
 
-      {/* ─── Lerp Wrapper + Blur Target ─── */}
-      <div ref={containerRef} className="sc-lerp-wrapper sc-blur-target">
-
       {/* ─── Fixed Logo ─── */}
-      <div className="sc-fixed-logo">
+      <div className="sc-fixed-logo" style={navOpen ? { opacity: 0, pointerEvents: "none" } : undefined}>
         <SilentCodeLogo />
       </div>
 
@@ -1408,6 +1405,8 @@ function SilentCodePage() {
         </div>
       </nav>
 
+      {/* ─── Lerp Wrapper + Blur Target ─── */}
+      <div ref={containerRef} className="sc-lerp-wrapper sc-blur-target">
       {/* ═══ SECTION 2 — HERO ═══ */}
       <section className="sc-hero" id="hero">
         <img src={IMAGES.hero} alt="Dark fashion editorial" className="sc-hero-bg" />
