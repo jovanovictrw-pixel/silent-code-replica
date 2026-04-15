@@ -21,7 +21,7 @@ export const products: Product[] = [
     price: 180,
     description: "500 GSM French Terry with a double-layered hood.",
     details: ["500 GSM French Terry", "Double-layered hood", '"Invisible" side-seam pockets'],
-    image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=800",
+    image: "/assets/men_hero.png",
     stockStatus: "low-stock",
     labels: ["New Release"]
   },
@@ -163,7 +163,7 @@ export const products: Product[] = [
     price: 210,
     description: 'A "second-skin" maxi dress with thumbholes.',
     details: ["Second-skin fit", "Integrated thumbholes", "Asymmetrical side-slit"],
-    image: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&q=80&w=800",
+    image: "/assets/women_hero.png",
     stockStatus: "in-stock"
   },
   {
@@ -216,6 +216,46 @@ export const products: Product[] = [
     image: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&q=80&w=800",
     stockStatus: "in-stock"
   },
+  {
+    id: "w8",
+    name: 'Platform "Stomp" Boots',
+    category: "women",
+    price: 320,
+    description: "3-inch chunky tread with technical nylon panels.",
+    details: ["3-inch platform", "Vibram-style lug sole", "Water-resistant nylon panels"],
+    image: "https://images.unsplash.com/photo-1605812860427-4024433a70fd?auto=format&fit=crop&q=80&w=800",
+    stockStatus: "in-stock"
+  },
+  {
+    id: "w9",
+    name: '"Lunar" Crescent Tote',
+    category: "women",
+    price: 185,
+    description: "Matte leather hobo bag with industrial hardware.",
+    details: ["Premium matte leather", "Adjustable seatbelt strap", "Silver-tone hardware"],
+    image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=800",
+    stockStatus: "in-stock"
+  },
+  {
+    id: "w10",
+    name: 'High-Neck "Shadow" Bra',
+    category: "women",
+    price: 75,
+    description: "Technical compression fabric with laser-cut ventilation.",
+    details: ["High-support compression", "Laser-cut detailing", "Moisture-wicking"],
+    image: "https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&q=80&w=800",
+    stockStatus: "in-stock"
+  },
+  {
+    id: "w11",
+    name: '"Circuit" Utility Leggings',
+    category: "women",
+    price: 130,
+    description: "Bonded seams and high-density technical mesh.",
+    details: ["Bonded ergonomic seams", "Side utility pockets", "Squat-proof fabric"],
+    image: "https://images.unsplash.com/photo-1506629082955-511b1aa562c8?auto=format&fit=crop&q=80&w=800",
+    stockStatus: "low-stock"
+  },
 
   // ACCESSORIES
   {
@@ -225,7 +265,7 @@ export const products: Product[] = [
     price: 110,
     description: "Thick, gunmetal-finished stainless steel chain.",
     details: ["Gunmetal-finished", "Stainless steel", "Industrial clasp"],
-    image: "https://images.unsplash.com/photo-1599643477877-537ef5278533?auto=format&fit=crop&q=80&w=800",
+    image: "/assets/accessories_hero.png",
     stockStatus: "in-stock"
   },
   {

@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { products } from "../lib/products";
 import { CategoryLayout } from "../components/shared/CategoryLayout";
 import { ProductCard } from "../components/shared/ProductCard";
+import { BundleCard } from "../components/shared/BundleCard";
 
 export const Route = createFileRoute("/category/$categoryName")({
   component: CategoryPage,
@@ -33,7 +34,11 @@ function CategoryPage() {
     <CategoryLayout title={title} subtitle={subtitle}>
       <div className="sc-prod-grid">
         {categoryProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
+          product.isBundle ? (
+            <BundleCard key={product.id} product={product} />
+          ) : (
+            <ProductCard key={product.id} product={product} />
+          )
         ))}
       </div>
       

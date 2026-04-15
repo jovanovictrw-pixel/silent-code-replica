@@ -1,55 +1,48 @@
 import { Product } from "../../lib/products";
+import { ScarcityIndicator } from "./ScarcityIndicator";
 
 interface ProductCardProps {
   product: Product;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const isBundle = product.isBundle;
-  
   return (
-    <div className="sc-prod-card sc-fade-target">
-      <div className="sc-prod-img-wrap">
-        <img src={product.image} alt={product.name} loading="lazy" />
+    <div className="sc-prod-card sc-fade-target group">
+      <div className="sc-prod-img-wrap overflow-hidden">
+        <img 
+          src={product.image} 
+          alt={product.name} 
+          loading="lazy" 
+          className="transition-transform duration-700 ease-out group-hover:scale-110"
+        />
         {/* We can add an alt image later if we have more assets */}
         <button className="sc-prod-add-btn">ADD TO BAG</button>
         
         {product.labels && product.labels.map(label => (
-          <div key={label} className="absolute top-4 left-4 bg-white text-black text-[9px] px-2 py-1 tracking-[0.2em] font-semibold uppercase z-10">
+          <div key={label} className="absolute top-4 left-4 bg-white text-black text-[9px] px-2 py-1 tracking-[0.2em] font-bold uppercase z-10 shadow-lg">
             {label}
           </div>
         ))}
 
-        {product.stockStatus === "low-stock" && (
-          <div className="absolute top-4 right-4 bg-red-600 text-white text-[9px] px-2 py-1 tracking-[0.2em] font-semibold uppercase z-10">
-            LOW STOCK
-          </div>
-        )}
+        <ScarcityIndicator status={product.stockStatus} />
       </div>
       <div className="sc-prod-info">
         <div className="flex justify-between items-start">
-          <div className="sc-prod-name">{product.name}</div>
-          {isBundle && (
-            <div className="text-[10px] text-green-500 font-bold mt-3.5 tracking-wider">
-              BUNDLE DEAL
-            </div>
-          )}
+          <div className="sc-prod-name group-hover:text-white transition-colors uppercase tracking-widest">{product.name}</div>
         </div>
-        <div className="sc-prod-sub">{product.description}</div>
-        <div className="flex items-center gap-3 mt-2.5">
-          <div className="sc-prod-price">${product.price}</div>
+        <div className="sc-prod-sub text-xs opacity-60 mt-1">{product.description}</div>
+        <div className="flex items-center gap-3 mt-3">
+          <div className="sc-prod-price font-semibold">${product.price}</div>
           {product.originalPrice && (
-            <div className="text-[12px] text-muted-foreground line-through opacity-50">
+            <div className="text-[12px] text-muted-foreground line-through opacity-40">
               ${product.originalPrice}
             </div>
           )}
         </div>
-        {isBundle && product.originalPrice && (
-          <div className="text-[10px] text-white opacity-40 mt-1 tracking-widest uppercase">
-            Save ${product.originalPrice - product.price}
-          </div>
-        )}
-        <button className="sc-prod-quick">QUICK VIEW →</button>
+        <button className="sc-prod-quick hover:!text-white flex items-center gap-1 group/btn mt-4">
+          QUICK SHOP 
+          <span className="inline-block transform transition-transform group-hover/btn:translate-x-1">→</span>
+        </button>
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { SilentCodeLogo } from "./Brand";
 import { InstagramIcon, TikTokIcon, PinterestIcon, XIcon, YouTubeIcon } from "./Icons";
 
@@ -26,11 +27,11 @@ export function Footer() {
         </div>
         <div>
           <div className="sc-footer-col-header">SHOP</div>
-          <a className="sc-footer-link">NEW ARRIVALS</a>
-          <a className="sc-footer-link">BEST SELLERS</a>
-          <a className="sc-footer-link">MEN</a>
-          <a className="sc-footer-link">WOMEN</a>
-          <a className="sc-footer-link">ACCESSORIES</a>
+          <Link to="/" className="sc-footer-link">NEW ARRIVALS</Link>
+          <Link to="/" className="sc-footer-link">BEST SELLERS</Link>
+          <Link to="/category/men" className="sc-footer-link">MEN</Link>
+          <Link to="/category/women" className="sc-footer-link">WOMEN</Link>
+          <Link to="/category/accessories" className="sc-footer-link">ACCESSORIES</Link>
         </div>
         <div>
           <div className="sc-footer-col-header">ASSISTANCE</div>
