@@ -10,6 +10,8 @@ export type Product = {
   isBundle?: boolean;
   stockStatus: "in-stock" | "low-stock" | "sold-out";
   labels?: string[];
+  bundleItemIds?: string[];
+  gridImages?: string[];
 };
 
 export const products: Product[] = [
@@ -32,7 +34,7 @@ export const products: Product[] = [
     price: 220,
     description: "Matte nylon with 3D modular pockets.",
     details: ["Matte nylon", "3D modular pockets", "Adjustable ankle toggles"],
-    image: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&q=80&w=800",
+    image: "/assets/men_cargo.png",
     stockStatus: "in-stock"
   },
   {
@@ -62,33 +64,33 @@ export const products: Product[] = [
     price: 350,
     description: "Water-resistant matte fabric with asymmetrical zippers.",
     details: ["Water-resistant matte fabric", "Asymmetrical zippers", "Quilted interior"],
-    image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&q=80&w=800",
+    image: "/assets/men_bomber.png",
     stockStatus: "in-stock"
   },
   {
-    id: "m6",
+    id: "a7",
     name: 'Suede "Shadow" Chelsea Boots',
-    category: "men",
+    category: "accessories",
     price: 280,
     description: "Thick lug sole with a water-repellent suede upper.",
     details: ["Thick lug sole", "Water-repellent suede", "Rear pull-tab"],
-    image: "https://images.unsplash.com/photo-1638247025967-b4e38f787b7a?auto=format&fit=crop&q=80&w=800",
+    image: "/assets/men_boots.png",
     stockStatus: "in-stock"
   },
   {
-    id: "m7",
+    id: "a8",
     name: '"Industrial" Utility Belt',
-    category: "men",
+    category: "accessories",
     price: 65,
     description: "Heavy-duty seatbelt nylon with a cobra buckle.",
     details: ["Seatbelt nylon", "Laser-engraved metal cobra buckle", "Quick-release"],
-    image: "https://images.unsplash.com/photo-1624222247344-550fb80053ad?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&q=80&w=800",
     stockStatus: "in-stock"
   },
   {
-    id: "m8",
+    id: "a9",
     name: "Carbon-Fiber Frame Shades",
-    category: "men",
+    category: "accessories",
     price: 195,
     description: "Wrap-around matte black frames with polarized lenses.",
     details: ["Carbon-fiber frames", "Polarized midnight lenses", "Matte finish"],
@@ -96,13 +98,13 @@ export const products: Product[] = [
     stockStatus: "in-stock"
   },
   {
-    id: "m9",
+    id: "a10",
     name: 'Modular "Courier" Sling Bag',
-    category: "men",
+    category: "accessories",
     price: 145,
     description: "Weather-proof chest bag with magnetic buckles.",
     details: ["Weather-proof fabric", "Magnetic FIDLOCK buckles", "Modular loops"],
-    image: "https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&q=80&w=800",
     stockStatus: "in-stock"
   },
 
@@ -111,38 +113,51 @@ export const products: Product[] = [
     id: "mb1",
     name: 'The "Street-Armor" Kit',
     category: "men",
-    price: 350,
-    originalPrice: 465,
-    description: "The ultimate daily uniform: Hoodie + Cargo Pants + Belt.",
-    details: ["Void Hoodie included", "Architectural Cargo included", "Industrial Belt included"],
-    image: "https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?auto=format&fit=crop&q=80&w=800",
+    price: 480,
+    originalPrice: 480,
+    description: "Full industrial deployment: Hoodie + Architectural Cargo + Baselayer Tee.",
+    details: ["Void Heavyweight Hoodie", "Architectural Cargo Pants", "Ghost Baselayer Tee"],
+    image: "/assets/men_hero.png",
+    gridImages: ["https://images.unsplash.com/photo-1542062700-9b61acbc367e?auto=format&fit=crop&q=80&w=800"],
     isBundle: true,
+    bundleItemIds: ["m1", "m2", "m4"],
     stockStatus: "in-stock",
-    labels: ["Best Seller"]
+    labels: ["FULL DEPLOYMENT"]
   },
   {
     id: "mb2",
     name: 'The "Midnight Rider" Set',
     category: "men",
-    price: 520,
-    originalPrice: 630,
-    description: "High-margin outerwear and easy styling: Bomber + Tee + Shades.",
-    details: ["Technical Shell Bomber included", "Ghost Tee included", "Carbon-Fiber Shades included"],
-    image: "https://images.unsplash.com/photo-1520975954732-4502c6b421ff?auto=format&fit=crop&q=80&w=800",
+    price: 580,
+    originalPrice: 720,
+    description: "Layered nocturnal protocol: Technical Bomber + Hoodie + Distressed Denim.",
+    details: ["Technical Shell Bomber", "Void Heavyweight Hoodie", "Distressed Onyx Denim"],
+    image: "https://images.unsplash.com/photo-1550009158-9ebf69173e03?auto=format&fit=crop&q=80&w=800",
+    gridImages: [
+      "https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&q=80&w=800", 
+      "/assets/men_bomber.png"
+    ],
     isBundle: true,
+    bundleItemIds: ["m5", "m1", "m3"],
     stockStatus: "low-stock"
   },
   {
     id: "mb3",
-    name: 'The "Stealth Accessory" Pack',
+    name: 'The "Omni-Layer" System',
     category: "men",
-    price: 320,
-    originalPrice: 405,
-    description: "Entry point for new customers: Sling Bag + Belt + Shades.",
-    details: ["Courier Sling Bag included", "Industrial Belt included", "Carbon-Fiber Shades included"],
-    image: "https://images.unsplash.com/photo-1544441893-675973e306a5?auto=format&fit=crop&q=80&w=800",
+    price: 610,
+    originalPrice: 610,
+    description: "Modular layering for all conditions: Void Jacket + Thermal Sweatshirt + Cargo.",
+    details: ["Void Jacket", "Thermal Grid Sweatshirt", "Architectural Cargo Pants"],
+    image: "/assets/men_hero.png",
+    gridImages: [
+      "https://images.unsplash.com/photo-1621252179027-94459d278660?auto=format&fit=crop&q=80&w=800",
+      "/assets/men_cargo.png"
+    ],
     isBundle: true,
-    stockStatus: "in-stock"
+    bundleItemIds: ["a7", "m11", "m2"],
+    stockStatus: "in-stock",
+    labels: ["SYSTEM COMPLETE"]
   },
 
   // WOMEN'S COLLECTION

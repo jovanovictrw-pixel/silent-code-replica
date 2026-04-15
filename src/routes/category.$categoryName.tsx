@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { products } from "../lib/products";
+import { useEffect } from "react";
 import { CategoryLayout } from "../components/shared/CategoryLayout";
 import { ProductCard } from "../components/shared/ProductCard";
 import { BundleCard } from "../components/shared/BundleCard";
@@ -12,8 +13,30 @@ function CategoryPage() {
   const { categoryName } = Route.useParams();
   
   const categoryProducts = products.filter(
-    (p) => p.category.toLowerCase() === categoryName.toLowerCase()
+    (p) => p.category?.toLowerCase().trim() === categoryName?.toLowerCase().trim()
   );
+
+  const bundles = categoryProducts.filter((p) => p.isBundle);
+  const essentials = categoryProducts.filter((p) => !p.isBundle);
+
+  useEffect(() => {
+    const targets = document.querySelectorAll(".sc-fade-target");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          (entry.target as HTMLElement).classList.add("sc-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    targets.forEach((t, i) => {
+      (t as HTMLElement).style.transitionDelay = `${(i % 12) * 50}ms`;
+      observer.observe(t);
+    });
+
+    return () => observer.disconnect();
+  }, [categoryProducts]);
 
   const titles: Record<string, string> = {
     men: "Men's Collection",
@@ -32,15 +55,29 @@ function CategoryPage() {
 
   return (
     <CategoryLayout title={title} subtitle={subtitle}>
-      <div className="sc-prod-grid">
-        {categoryProducts.map((product) => (
-          product.isBundle ? (
-            <BundleCard key={product.id} product={product} />
-          ) : (
-            <ProductCard key={product.id} product={product} />
-          )
-        ))}
-      </div>
+      {bundles.length > 0 && (
+        <div className="mb-20">
+          <div className="sc-section-label sc-fade-target mb-8 text-left">STRATEGIC BUNDLES</div>
+          <div className="sc-prod-grid">
+            {bundles.map((product) => (
+              <BundleCard key={product.id} product={product} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {essentials.length > 0 && (
+        <div>
+          <div className="sc-section-label sc-fade-target mb-8 text-left">
+            {categoryName === "accessories" ? "COLLECTION" : "CORE ESSENTIALS"}
+          </div>
+          <div className="sc-prod-grid-4">
+            {essentials.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </div>
+      )}
       
       {categoryProducts.length === 0 && (
         <div className="text-center py-20">

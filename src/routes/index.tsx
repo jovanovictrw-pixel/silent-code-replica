@@ -166,7 +166,7 @@ function SilentCodePage() {
           <div className="sc-section-label sc-fade-target">MOST WANTED</div>
           <h2 className="sc-section-h2 sc-fade-target sc-sticky-title">THE ESSENTIALS</h2>
           <p className="sc-section-body sc-fade-target">Our highest-rated, fastest-selling pieces. Updated each season.</p>
-          <div className="sc-prod-grid">
+          <div className="sc-prod-grid-4">
             {PRODUCTS.map(p => (
               <div key={p.name} className="sc-prod-card sc-fade-target">
                 <div className="sc-prod-img-wrap">
