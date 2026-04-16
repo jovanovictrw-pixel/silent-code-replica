@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { SilentCodeLogo } from "./Brand";
+import { SilentNumenLogo } from "./Brand";
 import { InstagramIcon, TikTokIcon, PinterestIcon, XIcon, YouTubeIcon } from "./Icons";
 
 export function Footer() {
@@ -11,7 +11,7 @@ export function Footer() {
     <footer className="sc-footer" id="footer">
       <div className="sc-footer-grid">
         <div>
-          <SilentCodeLogo size="small" />
+          <SilentNumenLogo size="small" />
           <div className="sc-footer-lang">
             <span className="sc-lang-active">EN</span> | <span>DE</span> | <span>FR</span>
           </div>
@@ -44,7 +44,7 @@ export function Footer() {
       </div>
       <div className="sc-footer-divider" />
       <div className="sc-footer-bottom">
-        <div className="sc-footer-copy">© 2026 SILENTCODE STUDIO — BUILT NOT BOUGHT.</div>
+        <div className="sc-footer-copy">© 2026 SILENTNUMEN STUDIO — BUILT NOT BOUGHT.</div>
         <button
           className="sc-footer-top sc-glass bg-white/5 hover:bg-white/10 text-white/60 hover:text-white border-white/5 backdrop-blur-md px-6 py-3 text-[10px] tracking-[0.2em]"
           onClick={scrollToTop}

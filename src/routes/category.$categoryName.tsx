@@ -9,17 +9,17 @@ export const Route = createFileRoute("/category/$categoryName")({
   head: ({ params }) => {
     const name = params.categoryName;
     const titleMap: Record<string, string> = {
-      men: "Men's Collection — SilentCode",
-      women: "Women's Collection — SilentCode",
-      accessories: "Accessories — SilentCode",
+      men: "Men's Collection — SilentNumen",
+      women: "Women's Collection — SilentNumen",
+      accessories: "Accessories — SilentNumen",
     };
     const descMap: Record<string, string> = {
-      men: "Brutalist silhouettes, structured outerwear, and tapered bottoms. Shop the SilentCode Men's Collection.",
-      women: "Neo-grunge aesthetics with high-fashion silhouettes. Shop the SilentCode Women's Collection.",
-      accessories: "Industrial hardware and technical gear to elevate the minimalist uniform. Shop SilentCode Accessories.",
+      men: "Brutalist silhouettes, structured outerwear, and tapered bottoms. Shop the SilentNumen Men's Collection.",
+      women: "Neo-grunge aesthetics with high-fashion silhouettes. Shop the SilentNumen Women's Collection.",
+      accessories: "Industrial hardware and technical gear to elevate the minimalist uniform. Shop SilentNumen Accessories.",
     };
-    const title = titleMap[name] ?? "Collection — SilentCode";
-    const description = descMap[name] ?? "Explore the SilentCode collection.";
+    const title = titleMap[name] ?? "Collection — SilentNumen";
+    const description = descMap[name] ?? "Explore the SilentNumen collection.";
     return {
       meta: [
         { title },

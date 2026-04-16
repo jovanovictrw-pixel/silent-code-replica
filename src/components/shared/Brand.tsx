@@ -1,4 +1,4 @@
-export function SilentCodeLogo({ size = "default" }: { size?: "default" | "small" }) {
+export function SilentNumenLogo({ size = "default" }: { size?: "default" | "small" }) {
   const w = size === "small" ? 140 : 160;
   const h = size === "small" ? 38 : 44;
   return (
@@ -8,7 +8,7 @@ export function SilentCodeLogo({ size = "default" }: { size?: "default" | "small
         fontFamily="'Josefin Sans', sans-serif" fontSize="13" fontWeight="400"
         letterSpacing="0.35em" dominantBaseline="middle"
         style={{ textTransform: "uppercase" }}>
-        SILENTCODE
+        SILENTNUMEN
       </text>
       <text x={w / 2} y={h / 2 + 12} textAnchor="middle" fill="white"
         fontFamily="'Josefin Sans', sans-serif" fontSize="7" fontWeight="300"

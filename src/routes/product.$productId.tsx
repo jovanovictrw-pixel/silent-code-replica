@@ -11,8 +11,8 @@ const SIZES = ["XS", "S", "M", "L", "XL", "2XL"];
 export const Route = createFileRoute("/product/$productId")({
   head: ({ params }) => {
     const product = products.find(p => p.id === params.productId);
-    const title = product ? `${product.name} — SilentCode` : "Product — SilentCode";
-    const description = product ? product.description : "Shop premium dark streetwear at SilentCode.";
+    const title = product ? `${product.name} — SilentNumen` : "Product — SilentNumen";
+    const description = product ? product.description : "Shop premium dark streetwear at SilentNumen.";
     return {
       meta: [
         { title },

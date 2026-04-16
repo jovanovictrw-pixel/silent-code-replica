@@ -11,17 +11,17 @@ import { useCart } from "../context/CartContext";
 export const Route = createFileRoute("/")(({
   head: () => ({
     meta: [
-      { title: "SilentCode — Premium Dark Streetwear" },
+      { title: "SilentNumen — Premium Dark Streetwear" },
       { name: "description", content: "Silence is the loudest statement. Explore premium dark streetwear built for those who prefer actions over words." },
-      { property: "og:title", content: "SilentCode — Premium Dark Streetwear" },
-      { property: "og:description", content: "Silence is the loudest statement. Premium dark streetwear for those who prefer actions over words." },
+      { property: "og:title", content: "SilentNumen — Premium Dark Streetwear" },
+      { property: "og:description", content: "SilentNumen — Premium dark streetwear for those who prefer actions over words." },
     ],
   }),
-  component: SilentCodePage,
+  component: SilentNumenPage,
 } as any));
 
 /* ─── Content Helpers ─── */
-const TICKER_TEXT = "SILENTCODE · SS25 · SILENCE IS LOUDEST · BUILT NOT BOUGHT · ACTIONS OVER WORDS · ";
+const TICKER_TEXT = "SILENTNUMEN · SS25 · SILENCE IS LOUDEST · BUILT NOT BOUGHT · ACTIONS OVER WORDS · ";
 
 const IMAGES = {
   hero: "https://images.unsplash.com/photo-1523398002811-999ca8dec234?q=85&auto=format&fit=crop",
@@ -40,7 +40,7 @@ const IMAGES = {
 const HOMEPAGE_PRODUCT_IDS = ["m1", "m4", "m2", "m5"];
 const HOMEPAGE_PRODUCTS = products.filter(p => HOMEPAGE_PRODUCT_IDS.includes(p.id));
 
-function SilentCodePage() {
+function SilentNumenPage() {
   const [emailSubmitted, setEmailSubmitted] = useState(false);
   const [email, setEmail] = useState("");
   const [curtainDone, setCurtainDone] = useState(() => {
@@ -97,7 +97,7 @@ function SilentCodePage() {
             src={`${IMAGES.hero}&fm=webp&q=85&w=1920`}
             srcSet={`${IMAGES.hero}&fm=webp&q=85&w=800 800w, ${IMAGES.hero}&fm=webp&q=85&w=1200 1200w, ${IMAGES.hero}&fm=webp&q=85&w=1920 1920w`}
             sizes="100vw"
-            alt="Model wearing SilentCode SS25 dark streetwear — obsidian hoodie editorial"
+            alt="Model wearing SilentNumen SS25 dark streetwear — obsidian hoodie editorial"
             width={1920}
             height={1080}
             className="sc-hero-bg vt-hero"
@@ -239,10 +239,10 @@ function SilentCodePage() {
           <img src={IMAGES.fabric} alt="" className="sc-parallax-layer-bg" aria-hidden="true" style={{ opacity: 0.08 }} />
           <div className="sc-parallax-layer-mid" style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.9) 100%)" }} aria-hidden="true" />
           <div className="sc-value-content sc-parallax-layer-fg">
-            <div className="sc-section-label sc-fade-target sc-sticky-title" style={{ letterSpacing: "0.45em" }}>THE SILENTCODE DIFFERENCE</div>
+            <div className="sc-section-label sc-fade-target sc-sticky-title" style={{ letterSpacing: "0.45em" }}>THE SILENTNUMEN DIFFERENCE</div>
             <h2 className="sc-value-h2 sc-fade-target">BUILT FOR THOSE WHO PREFER ACTIONS OVER WORDS.</h2>
             <p className="sc-value-body sc-fade-target">
-              Every SilentCode piece begins as a sketch on paper — then it becomes a conversation between a fabric supplier,
+              Every SilentNumen piece begins as a sketch on paper — then it becomes a conversation between a fabric supplier,
               a pattern cutter, and a small factory. No shortcuts. No fast fashion. Just considered design for people who know the difference.
             </p>
             <div className="sc-benefits-grid">
@@ -270,7 +270,7 @@ function SilentCodePage() {
         <section className="sc-ugc" id="ugc">
           <div className="sc-section-label sc-fade-target">AS SEEN IN THE WILD</div>
           <h2 className="sc-section-h2 sc-fade-target">WEAR IT YOUR WAY</h2>
-          <p className="sc-section-body sc-fade-target">Tag @silentcode on Instagram to be featured.</p>
+          <p className="sc-section-body sc-fade-target">Tag @silentnumen on Instagram to be featured.</p>
           <div className="sc-ugc-grid">
             {[IMAGES.ugc1, IMAGES.ugc2, IMAGES.ugc3, IMAGES.ugc4, IMAGES.ugc5].map((img, i) => (
               <button
@@ -279,7 +279,7 @@ function SilentCodePage() {
                 onClick={() => scrollToSection("products")}
                 aria-label={`Shop this street style look (${i + 1} of 5)`}
               >
-                <img src={img} alt={`Street style look ${i + 1} wearing SilentCode`} loading="lazy" width={600} height={600} />
+                <img src={img} alt={`Street style look ${i + 1} wearing SilentNumen`} loading="lazy" width={600} height={600} />
                 <div className="sc-ugc-hover" aria-hidden="true">
                   <span className="sc-ugc-hover-text">SHOP THE LOOK</span>
                   <InstagramMiniIcon />
@@ -289,13 +289,13 @@ function SilentCodePage() {
           </div>
           <div style={{ textAlign: "center", marginTop: "50px" }} className="sc-fade-target">
             <a
-              href="https://instagram.com/silentcode"
+              href="https://instagram.com/silentnumen"
               target="_blank"
               rel="noopener noreferrer"
               className="sc-btn-primary"
               style={{ display: "inline-block" }}
             >
-              FOLLOW @SILENTCODE
+              FOLLOW @SILENTNUMEN
             </a>
             <p style={{ fontFamily: "var(--sc-font-body)", fontSize: "13px", color: "#777", marginTop: "14px" }}>
               Join 84,000 followers on Instagram

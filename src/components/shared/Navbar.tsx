@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { Link } from "@tanstack/react-router";
-import { SilentCodeLogo } from "./Brand";
+import { SilentNumenLogo } from "./Brand";
 import { InstagramIcon, TikTokIcon, PinterestIcon, XIcon, YouTubeIcon } from "./Icons";
 import { useCart } from "../../context/CartContext";
 import { CartDrawer } from "./CartDrawer";
@@ -49,7 +49,7 @@ export function Navbar() {
     <>
       <div className="sc-fixed-logo" style={navOpen ? { opacity: 0, pointerEvents: "none" } : undefined}>
         <Link to="/">
-          <SilentCodeLogo />
+          <SilentNumenLogo />
         </Link>
       </div>
 
@@ -93,7 +93,7 @@ export function Navbar() {
         <button className="sc-nav-close" onClick={() => setNavOpen(false)} aria-label="Close navigation">×</button>
         <div className="sc-nav-header">
           <Link to="/" onClick={() => setNavOpen(false)}>
-            <SilentCodeLogo size="small" />
+            <SilentNumenLogo size="small" />
           </Link>
         </div>
         
@@ -152,7 +152,7 @@ export function Navbar() {
             <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="sc-glass bg-white/5 hover:bg-white/10 w-10 h-10 flex items-center justify-center border-white/5 rounded-full" aria-label="X (Twitter)"><XIcon size={18} /></a>
             <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="sc-glass bg-white/5 hover:bg-white/10 w-10 h-10 flex items-center justify-center border-white/5 rounded-full" aria-label="YouTube"><YouTubeIcon size={18} /></a>
           </div>
-          <div className="sc-nav-copyright text-[10px] text-white/30 tracking-widest uppercase opacity-70">© 2026 SilentCode Studio — All rights reserved</div>
+          <div className="sc-nav-copyright text-[10px] text-white/30 tracking-widest uppercase opacity-70">© 2026 SilentNumen Studio — All rights reserved</div>
         </div>
       </nav>
 
