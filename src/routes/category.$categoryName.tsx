@@ -1,17 +1,42 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { products } from "../lib/products";
-import { useEffect } from "react";
 import { CategoryLayout } from "../components/shared/CategoryLayout";
 import { ProductCard } from "../components/shared/ProductCard";
 import { BundleCard } from "../components/shared/BundleCard";
+import { useFadeOnScroll } from "../hooks/useFadeOnScroll";
 
 export const Route = createFileRoute("/category/$categoryName")({
+  head: ({ params }) => {
+    const name = params.categoryName;
+    const titleMap: Record<string, string> = {
+      men: "Men's Collection — SilentCode",
+      women: "Women's Collection — SilentCode",
+      accessories: "Accessories — SilentCode",
+    };
+    const descMap: Record<string, string> = {
+      men: "Brutalist silhouettes, structured outerwear, and tapered bottoms. Shop the SilentCode Men's Collection.",
+      women: "Neo-grunge aesthetics with high-fashion silhouettes. Shop the SilentCode Women's Collection.",
+      accessories: "Industrial hardware and technical gear to elevate the minimalist uniform. Shop SilentCode Accessories.",
+    };
+    const title = titleMap[name] ?? "Collection — SilentCode";
+    const description = descMap[name] ?? "Explore the SilentCode collection.";
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary_large_image" },
+      ],
+    };
+  },
   component: CategoryPage,
 });
 
 function CategoryPage() {
   const { categoryName } = Route.useParams();
-  
+
   const categoryProducts = products.filter(
     (p) => p.category?.toLowerCase().trim() === categoryName?.toLowerCase().trim()
   );
@@ -19,24 +44,8 @@ function CategoryPage() {
   const bundles = categoryProducts.filter((p) => p.isBundle);
   const essentials = categoryProducts.filter((p) => !p.isBundle);
 
-  useEffect(() => {
-    const targets = document.querySelectorAll(".sc-fade-target");
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          (entry.target as HTMLElement).classList.add("sc-visible");
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
-
-    targets.forEach((t, i) => {
-      (t as HTMLElement).style.transitionDelay = `${(i % 12) * 50}ms`;
-      observer.observe(t);
-    });
-
-    return () => observer.disconnect();
-  }, [categoryProducts]);
+  // Use the shared fade hook — re-runs when categoryProducts change
+  useFadeOnScroll([categoryName]);
 
   const titles: Record<string, string> = {
     men: "Men's Collection",
@@ -78,7 +87,7 @@ function CategoryPage() {
           </div>
         </div>
       )}
-      
+
       {categoryProducts.length === 0 && (
         <div className="text-center py-20">
           <p className="text-muted-foreground uppercase tracking-widest">

@@ -6,7 +6,7 @@ import { useEffect, useRef, useCallback } from "react";
  * A single requestAnimationFrame loop that powers all scroll-driven animations:
  *
  * 1. Momentum Scrubbing (lerp inertia) — desktop only, respects prefers-reduced-motion
- * 2. Horizontal Text Ticker — velocity-driven translateX on .sc-ticker-track
+ * 2. Horizontal Text Ticker — velocity-driven translateX with proper wrap-around
  * 3. Scale-From-Center on Product Cards — .sc-prod-card scale based on viewport center distance
  * 4. Sticky Section Title Scrub — opacity fade on .sc-sticky-title within its section
  * 5. Parallax Depth Stack — three-speed parallax via CSS variables
@@ -62,13 +62,20 @@ export function useScrollEngine() {
     if (lerpEnabled.current) {
       const wrapper = document.querySelector(".sc-lerp-wrapper") as HTMLElement;
       if (wrapper) {
-        // Set body height to wrapper's scroll height so scrollbar still works
         document.body.style.height = `${wrapper.scrollHeight}px`;
         wrapper.style.position = "fixed";
         wrapper.style.top = "0";
         wrapper.style.left = "0";
         wrapper.style.width = "100%";
         wrapper.style.willChange = "transform";
+
+        // ResizeObserver keeps body height in sync when content changes
+        const ro = new ResizeObserver(() => {
+          document.body.style.height = `${wrapper.scrollHeight}px`;
+        });
+        ro.observe(wrapper);
+        // Store cleanup ref on element (cheap, avoids closure complexity)
+        (wrapper as HTMLElement & { _ro?: ResizeObserver })._ro = ro;
       }
     }
   }, []);
@@ -82,7 +89,7 @@ export function useScrollEngine() {
     // ─── Track velocity ───
     const currentScroll = window.scrollY;
     const deltaY = currentScroll - s.lastScrollY;
-    s.velocity = deltaY / Math.max(dt, 1) * 16; // normalize to ~per-frame
+    s.velocity = (deltaY / Math.max(dt, 1)) * 16; // normalize to ~per-frame
     s.lastScrollY = currentScroll;
     s.targetY = currentScroll;
 
@@ -108,14 +115,24 @@ export function useScrollEngine() {
     const vh = window.innerHeight;
     const docHeight = document.documentElement.scrollHeight - vh;
 
-    // ─── #2 Horizontal Text Ticker ───
+    // ─── #2 Horizontal Text Ticker (with wrap-around) ───
     const tickerTracks = document.querySelectorAll(".sc-ticker-track") as NodeListOf<HTMLElement>;
     if (tickerTracks.length > 0) {
-      // Speed is proportional to velocity, with a base drift
       const speed = s.velocity * 2.5;
       s.tickerX -= speed;
-      // Also add a gentle idle drift
+      // Idle drift
       s.tickerX -= 0.3;
+
+      // Wrap-around: reset by one text-span width to avoid infinite drift
+      const firstTrack = tickerTracks[0];
+      const firstSpan = firstTrack.querySelector(".sc-ticker-text") as HTMLElement;
+      if (firstSpan) {
+        const spanWidth = firstSpan.offsetWidth;
+        if (spanWidth > 0 && s.tickerX < -(spanWidth)) {
+          s.tickerX += spanWidth;
+        }
+      }
+
       tickerTracks.forEach((track) => {
         track.style.transform = `translate3d(${s.tickerX}px, 0, 0)`;
       });
@@ -131,14 +148,12 @@ export function useScrollEngine() {
         const distance = Math.abs(cardCenter - viewCenter);
         const maxDist = vh;
         const normalizedDist = Math.min(distance / maxDist, 1);
-        // Scale from 0.92 to 1.0 — closer to center = larger
         const scale = 1 - normalizedDist * 0.08;
         const clampedScale = Math.max(0.92, Math.min(1, scale));
 
-        // Only apply when card is in viewport
         if (rect.top < vh && rect.bottom > 0) {
           card.style.transform = `scale(${clampedScale})`;
-          card.style.transition = "transform 0.15s ease-out";
+          // Transition is defined in CSS — do NOT set it inline on every frame
         }
       });
     }
@@ -151,7 +166,6 @@ export function useScrollEngine() {
       const sectionRect = section.getBoundingClientRect();
       const sectionBottom = sectionRect.bottom;
       const sectionHeight = sectionRect.height;
-      // Fade out over the final 20% of the section's height
       const fadeStart = sectionHeight * 0.8;
       const progress = sectionHeight - sectionBottom;
 
@@ -170,7 +184,6 @@ export function useScrollEngine() {
         const rect = section.getBoundingClientRect();
         if (rect.top < vh && rect.bottom > 0) {
           const offset = rect.top;
-          // Three layers with different speeds
           section.style.setProperty("--parallax-bg", `${offset * 0.3}px`);
           section.style.setProperty("--parallax-mid", `${offset * 0.6}px`);
           section.style.setProperty("--parallax-fg", `0px`);
@@ -196,7 +209,6 @@ export function useScrollEngine() {
           blurTarget.style.transition = "filter 0ms";
           s.isScrolling = true;
 
-          // Clear existing timeout
           if (s.scrollTimeout) clearTimeout(s.scrollTimeout);
           s.scrollTimeout = setTimeout(() => {
             blurTarget.style.transition = "filter 150ms ease-out";
@@ -223,8 +235,8 @@ export function useScrollEngine() {
       s.isMobile = window.innerWidth < 768 || "ontouchstart" in window;
       lerpEnabled.current = !s.isMobile && !s.prefersReduced;
 
+      const wrapper = document.querySelector(".sc-lerp-wrapper") as HTMLElement & { _ro?: ResizeObserver };
       if (lerpEnabled.current) {
-        const wrapper = document.querySelector(".sc-lerp-wrapper") as HTMLElement;
         if (wrapper) {
           document.body.style.height = `${wrapper.scrollHeight}px`;
           wrapper.style.position = "fixed";
@@ -233,7 +245,6 @@ export function useScrollEngine() {
           wrapper.style.width = "100%";
         }
       } else {
-        const wrapper = document.querySelector(".sc-lerp-wrapper") as HTMLElement;
         if (wrapper) {
           document.body.style.height = "";
           wrapper.style.position = "";
@@ -263,10 +274,11 @@ export function useScrollEngine() {
       window.removeEventListener("resize", onResize);
       mq.removeEventListener("change", onMotionChange);
 
-      // Clean up lerp styles
+      // Clean up lerp styles + ResizeObserver
       document.body.style.height = "";
-      const wrapper = document.querySelector(".sc-lerp-wrapper") as HTMLElement;
+      const wrapper = document.querySelector(".sc-lerp-wrapper") as HTMLElement & { _ro?: ResizeObserver };
       if (wrapper) {
+        wrapper._ro?.disconnect();
         wrapper.style.position = "";
         wrapper.style.top = "";
         wrapper.style.left = "";

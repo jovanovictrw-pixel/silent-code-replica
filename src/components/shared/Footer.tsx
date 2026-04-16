@@ -17,11 +17,11 @@ export function Footer() {
           </div>
           <div className="sc-footer-socials">
             <div style={{ display: "flex", gap: "14px" }}>
-              <a href="#" aria-label="Instagram"><InstagramIcon size={16} /></a>
-              <a href="#" aria-label="TikTok"><TikTokIcon size={16} /></a>
-              <a href="#" aria-label="Pinterest"><PinterestIcon size={16} /></a>
-              <a href="#" aria-label="X"><XIcon size={16} /></a>
-              <a href="#" aria-label="YouTube"><YouTubeIcon size={16} /></a>
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><InstagramIcon size={16} /></a>
+              <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><TikTokIcon size={16} /></a>
+              <a href="https://pinterest.com" target="_blank" rel="noopener noreferrer" aria-label="Pinterest"><PinterestIcon size={16} /></a>
+              <a href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)"><XIcon size={16} /></a>
+              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><YouTubeIcon size={16} /></a>
             </div>
           </div>
         </div>
@@ -35,17 +35,20 @@ export function Footer() {
         </div>
         <div>
           <div className="sc-footer-col-header">ASSISTANCE</div>
-          <a className="sc-footer-link">SHIPPING & RETURNS</a>
-          <a className="sc-footer-link">SIZE GUIDE</a>
-          <a className="sc-footer-link">CONTACT US</a>
-          <a className="sc-footer-link">PRIVACY POLICY</a>
-          <a className="sc-footer-link">TERMS OF SERVICE</a>
+          <a href="/#value" className="sc-footer-link">SHIPPING &amp; RETURNS</a>
+          <a href="/#value" className="sc-footer-link">SIZE GUIDE</a>
+          <a href="#footer" className="sc-footer-link">CONTACT US</a>
+          <a href="/#value" className="sc-footer-link">PRIVACY POLICY</a>
+          <a href="/#value" className="sc-footer-link">TERMS OF SERVICE</a>
         </div>
       </div>
       <div className="sc-footer-divider" />
       <div className="sc-footer-bottom">
         <div className="sc-footer-copy">© 2026 SILENTCODE STUDIO — BUILT NOT BOUGHT.</div>
-        <button className="sc-footer-top sc-glass bg-white/5 hover:bg-white/10 text-white/60 hover:text-white border-white/5 backdrop-blur-md px-6 py-3 text-[10px] tracking-[0.2em]" onClick={scrollToTop}>
+        <button
+          className="sc-footer-top sc-glass bg-white/5 hover:bg-white/10 text-white/60 hover:text-white border-white/5 backdrop-blur-md px-6 py-3 text-[10px] tracking-[0.2em]"
+          onClick={scrollToTop}
+        >
           BACK TO TOP ↑
         </button>
       </div>

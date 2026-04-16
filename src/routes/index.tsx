@@ -1,11 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useScrollEngine } from "../hooks/useScrollEngine";
+import { useFadeOnScroll } from "../hooks/useFadeOnScroll";
 import { Navbar } from "../components/shared/Navbar";
 import { Footer } from "../components/shared/Footer";
 import { InstagramMiniIcon, PackageIcon, ExchangeIcon, LeafIcon, RulerIcon } from "../components/shared/Icons";
+import { products } from "../lib/products";
+import { useCart } from "../context/CartContext";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/")(({
   head: () => ({
     meta: [
       { title: "SilentCode — Premium Dark Streetwear" },
@@ -15,23 +18,16 @@ export const Route = createFileRoute("/")({
     ],
   }),
   component: SilentCodePage,
-});
+} as any));
 
 /* ─── Content Helpers ─── */
-const TICKER_TEXT = "SILENTCODE \u00B7 SS25 \u00B7 SILENCE IS LOUDEST \u00B7 BUILT NOT BOUGHT \u00B7 ACTIONS OVER WORDS \u00B7 ";
+const TICKER_TEXT = "SILENTCODE · SS25 · SILENCE IS LOUDEST · BUILT NOT BOUGHT · ACTIONS OVER WORDS · ";
+
 const IMAGES = {
   hero: "https://images.unsplash.com/photo-1523398002811-999ca8dec234?q=85&auto=format&fit=crop",
   men: "https://images.unsplash.com/photo-1617137968427-85924c800a22?w=800&q=80&auto=format&fit=crop",
   women: "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=800&q=80&auto=format&fit=crop",
   accessories: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80&auto=format&fit=crop",
-  product1: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600&q=80&auto=format&fit=crop",
-  product1alt: "https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=600&q=80&auto=format&fit=crop",
-  product2: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80&auto=format&fit=crop",
-  product2alt: "https://images.unsplash.com/photo-1552902865-b72c031ac5ea?w=600&q=80&auto=format&fit=crop",
-  product3: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=600&q=80&auto=format&fit=crop",
-  product3alt: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&q=80&auto=format&fit=crop",
-  product4: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&q=80&auto=format&fit=crop",
-  product4alt: "https://images.unsplash.com/photo-1548126032-079a0fb0099d?w=600&q=80&auto=format&fit=crop",
   fabric: "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=1920&q=80&auto=format&fit=crop",
   ugc1: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&q=80&auto=format&fit=crop",
   ugc2: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80&auto=format&fit=crop",
@@ -40,61 +36,53 @@ const IMAGES = {
   ugc5: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600&q=80&auto=format&fit=crop",
 };
 
-const PRODUCTS = [
-  { name: "SILENT HOODIE", sub: "Obsidian / Heavyweight Fleece", price: "$98.00", stars: "★★★★★ 4.9", img: IMAGES.product1, imgAlt: IMAGES.product1alt },
-  { name: "CODE TEE", sub: "Ash Grey / 180gsm Cotton", price: "$52.00", stars: "★★★★★ 4.8", img: IMAGES.product2, imgAlt: IMAGES.product2alt },
-  { name: "RECON CARGO", sub: "Slate / Ripstop Cotton Blend", price: "$124.00", stars: "★★★★☆ 4.7", img: IMAGES.product3, imgAlt: IMAGES.product3alt },
-  { name: "VOID JACKET", sub: "Ink Black / Technical Shell", price: "$210.00", stars: "★★★★★ 4.9", img: IMAGES.product4, imgAlt: IMAGES.product4alt },
-];
+// Pull from shared product data instead of hardcoding
+const HOMEPAGE_PRODUCT_IDS = ["m1", "m4", "m2", "m5"];
+const HOMEPAGE_PRODUCTS = products.filter(p => HOMEPAGE_PRODUCT_IDS.includes(p.id));
 
 function SilentCodePage() {
   const [emailSubmitted, setEmailSubmitted] = useState(false);
-  const [curtainDone, setCurtainDone] = useState(false);
+  const [email, setEmail] = useState("");
+  const [curtainDone, setCurtainDone] = useState(() => {
+    // Skip curtain on repeat visits within the same session
+    return sessionStorage.getItem("sc_curtain_shown") === "1";
+  });
   const containerRef = useRef<HTMLDivElement>(null);
+  const { addToCart } = useCart();
 
-  // Activate the scroll engine
   useScrollEngine();
+  useFadeOnScroll([]);
 
   const scrollToSection = useCallback((id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    const el = document.getElementById(id);
+    if (!el) return;
+    // When lerp is active, use offsetTop on window.scrollTo to avoid desync
+    window.scrollTo({ top: el.offsetTop, behavior: "smooth" });
   }, []);
 
   useEffect(() => {
+    if (curtainDone) return; // Already dismissed
     const curtain = document.getElementById("sc-curtain-el");
     if (curtain) {
-      const onEnd = () => setCurtainDone(true);
+      const onEnd = () => {
+        setCurtainDone(true);
+        sessionStorage.setItem("sc_curtain_shown", "1");
+      };
       curtain.addEventListener("animationend", onEnd);
       return () => curtain.removeEventListener("animationend", onEnd);
     }
-  }, []);
-
-  useEffect(() => {
-    const targets = document.querySelectorAll(".sc-fade-target");
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          (entry.target as HTMLElement).classList.add("sc-visible");
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.15 });
-
-    targets.forEach((t, i) => {
-      (t as HTMLElement).style.transitionDelay = `${(i % 6) * 80}ms`;
-      observer.observe(t);
-    });
-
-    return () => observer.disconnect();
-  }, []);
+  }, [curtainDone]);
 
   const handleEmailSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // In production: send `email` to your email service (Resend, Mailchimp, etc.)
+    console.info("Email signup:", email);
     setEmailSubmitted(true);
   };
 
   return (
     <>
-      <div className="sc-progress-bar" />
+      <div className="sc-progress-bar" aria-hidden="true" />
 
       {!curtainDone && (
         <div id="sc-curtain-el" className="sc-curtain" aria-hidden="true" />
@@ -103,45 +91,53 @@ function SilentCodePage() {
       <Navbar />
 
       <div ref={containerRef} className="sc-lerp-wrapper sc-blur-target">
-        {/* ═══ SECTION 2 — HERO ═══ */}
+        {/* ═══ HERO ═══ */}
         <section className="sc-hero" id="hero">
-          <img 
-            src={`${IMAGES.hero}&fm=webp&q=85&w=1920`} 
+          <img
+            src={`${IMAGES.hero}&fm=webp&q=85&w=1920`}
             srcSet={`${IMAGES.hero}&fm=webp&q=85&w=800 800w, ${IMAGES.hero}&fm=webp&q=85&w=1200 1200w, ${IMAGES.hero}&fm=webp&q=85&w=1920 1920w`}
             sizes="100vw"
-            alt="Dark fashion editorial" 
-            className="sc-hero-bg vt-hero" 
+            alt="Model wearing SilentCode SS25 dark streetwear — obsidian hoodie editorial"
+            width={1920}
+            height={1080}
+            className="sc-hero-bg vt-hero"
           />
-          <div className="sc-hero-overlay" />
+          <div className="sc-hero-overlay" aria-hidden="true" />
           <div className="sc-hero-content">
-            <div className="sc-hero-line" />
+            <div className="sc-hero-line" aria-hidden="true" />
             <div className="sc-hero-sublabel">SS 2025 COLLECTION</div>
             <h1 className="sc-hero-h1 vt-heading">SILENCE IS THE LOUDEST STATEMENT.</h1>
             <div style={{ marginTop: "40px" }} className="flex flex-col md:flex-row gap-4 justify-center items-center">
-              <button className="sc-btn-primary sc-glass bg-white/10 hover:bg-white/20 text-white border-white/20 backdrop-blur-xl px-12" onClick={() => scrollToSection("products")}>
+              <button
+                className="sc-btn-primary sc-glass bg-white/10 hover:bg-white/20 text-white border-white/20 backdrop-blur-xl px-12"
+                onClick={() => scrollToSection("products")}
+              >
                 SHOP NEW ARRIVALS
               </button>
-              <button className="sc-btn-primary bg-white text-black px-12" onClick={() => scrollToSection("categories")}>
+              <button
+                className="sc-btn-primary bg-white text-black px-12"
+                onClick={() => scrollToSection("categories")}
+              >
                 COLLECTIONS
               </button>
             </div>
           </div>
-          <div className="sc-scroll-indicator">
+          <div className="sc-scroll-indicator" aria-hidden="true">
             <div className="sc-scroll-text">Scroll</div>
             <div className="sc-scroll-line" />
           </div>
         </section>
 
         {/* ═══ TICKER STRIP ═══ */}
-        <div className="sc-ticker sc-glass border-l-0 border-r-0 border-white/5 py-4">
+        <div className="sc-ticker sc-glass border-l-0 border-r-0 border-white/5 py-4" aria-hidden="true">
           <div className="sc-ticker-track">
-            {Array.from({ length: 12 }).map((_, i) => (
+            {Array.from({ length: 8 }).map((_, i) => (
               <span key={i} className="sc-ticker-text">{TICKER_TEXT}</span>
             ))}
           </div>
         </div>
 
-        {/* ═══ SECTION 3 — CATEGORIES ═══ */}
+        {/* ═══ CATEGORIES ═══ */}
         <section className="sc-categories" id="categories">
           <div className="sc-section-label sc-sticky-title" style={{ marginBottom: "50px" }}>SHOP BY CATEGORY</div>
           <div className="sc-cat-grid">
@@ -151,8 +147,8 @@ function SilentCodePage() {
               { label: "ACCESSORIES", cta: "EXPLORE ACCESSORIES →", img: IMAGES.accessories, href: "/category/accessories" },
             ].map(cat => (
               <Link to={cat.href as any} key={cat.label} className="sc-cat-tile sc-fade-target group block relative">
-                <img src={cat.img} alt={cat.label} loading="lazy" className="w-full h-full object-cover" />
-                <div className="sc-cat-overlay bg-black/20 group-hover:bg-black/40 transition-all duration-700" />
+                <img src={cat.img} alt={`${cat.label} collection`} loading="lazy" width={800} height={1000} className="w-full h-full object-cover" />
+                <div className="sc-cat-overlay bg-black/20 group-hover:bg-black/40 transition-all duration-700" aria-hidden="true" />
                 <div className="sc-cat-content sc-glass bg-white/5 backdrop-blur-xl border-white/10 p-8 absolute bottom-10 left-10 right-10 md:left-auto md:w-64 z-10 transition-all duration-500 group-hover:bg-white/10">
                   <div className="sc-cat-label text-white !mb-4">{cat.label}</div>
                   <span className="sc-cat-cta text-white/50 group-hover:text-white transition-colors">{cat.cta}</span>
@@ -160,57 +156,88 @@ function SilentCodePage() {
               </Link>
             ))}
           </div>
-          <div className="sc-shop-all-banner sc-fade-target" onClick={() => scrollToSection("products")}>
-            <div className="sc-shop-all-line" />
+          <button
+            className="sc-shop-all-banner sc-fade-target"
+            onClick={() => scrollToSection("products")}
+            aria-label="View the full collection"
+          >
+            <div className="sc-shop-all-line" aria-hidden="true" />
             <div className="sc-shop-all-text">VIEW THE FULL COLLECTION</div>
-            <div className="sc-shop-all-line" />
-          </div>
+            <div className="sc-shop-all-line" aria-hidden="true" />
+          </button>
         </section>
 
-        {/* ═══ SECTION 4 — BEST SELLERS ═══ */}
+        {/* ═══ BEST SELLERS ═══ */}
         <section className="sc-products" id="products">
           <div className="sc-section-label sc-fade-target">MOST WANTED</div>
           <h2 className="sc-section-h2 sc-fade-target sc-sticky-title">THE ESSENTIALS</h2>
           <p className="sc-section-body sc-fade-target">Our highest-rated, fastest-selling pieces. Updated each season.</p>
           <div className="sc-prod-grid-4">
-            {PRODUCTS.map(p => (
-              <div key={p.name} className="sc-prod-card sc-fade-target">
+            {HOMEPAGE_PRODUCTS.map(p => (
+              <div key={p.id} className="sc-prod-card sc-fade-target">
                 <div className="sc-prod-img-wrap">
-                  <img src={p.img} alt={p.name} loading="lazy" />
-                  <img src={p.imgAlt} alt={`${p.name} worn`} loading="lazy" className="sc-prod-img-alt" />
-                  <button className="sc-prod-add-btn">ADD TO BAG</button>
+                  <img
+                    src={`${p.image}${p.image.includes("?") ? "&" : "?"}fm=webp&q=80&w=800`}
+                    alt={p.name}
+                    loading="lazy"
+                    width={800}
+                    height={1000}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src =
+                        "https://images.unsplash.com/photo-1556821840-3a63f95609a7?fm=webp&q=80&w=800";
+                    }}
+                  />
+                  <img
+                    src={`${p.image}${p.image.includes("?") ? "&" : "?"}fm=webp&q=80&w=800&sat=-100`}
+                    alt={`${p.name} alternate view`}
+                    loading="lazy"
+                    className="sc-prod-img-alt"
+                    aria-hidden="true"
+                  />
+                  <button
+                    className="sc-prod-add-btn"
+                    onClick={() => addToCart(p, "M")}
+                    aria-label={`Add ${p.name} to bag`}
+                  >
+                    ADD TO BAG
+                  </button>
                 </div>
                 <div className="sc-prod-info">
-                  <div className="sc-prod-stars">{p.stars}</div>
                   <div className="sc-prod-name">{p.name}</div>
-                  <div className="sc-prod-sub">{p.sub}</div>
-                  <div className="sc-prod-price">{p.price}</div>
-                  <button className="sc-prod-quick">QUICK ADD →</button>
+                  <div className="sc-prod-sub">{p.description}</div>
+                  <div className="sc-prod-price">${p.price}</div>
+                  {p.stockStatus === "low-stock" && (
+                    <div style={{ fontSize: "9px", color: "#e53e3e", letterSpacing: "0.25em", marginTop: "6px", fontFamily: "var(--sc-font-heading)", textTransform: "uppercase" }}>
+                      LOW STOCK
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
           </div>
           <div style={{ textAlign: "center", marginTop: "60px" }} className="sc-fade-target">
-            <button className="sc-btn-primary">SHOP ALL BEST SELLERS</button>
-            <p style={{ fontFamily: "var(--sc-font-body)", fontSize: "13px", fontStyle: "italic", color: "#666", marginTop: "14px" }}>
+            <Link to="/category/men" className="sc-btn-primary" style={{ display: "inline-block" }}>
+              SHOP ALL COLLECTIONS
+            </Link>
+            <p style={{ fontFamily: "var(--sc-font-body)", fontSize: "13px", fontStyle: "italic", color: "#777", marginTop: "14px" }}>
               Rated 4.8 / 5 by over 2,400 customers
             </p>
           </div>
         </section>
 
         {/* ═══ TICKER STRIP 2 ═══ */}
-        <div className="sc-ticker">
+        <div className="sc-ticker" aria-hidden="true">
           <div className="sc-ticker-track">
-            {Array.from({ length: 12 }).map((_, i) => (
+            {Array.from({ length: 8 }).map((_, i) => (
               <span key={i} className="sc-ticker-text">{TICKER_TEXT}</span>
             ))}
           </div>
         </div>
 
-        {/* ═══ SECTION 5 — VALUE PROPOSITION ═══ */}
+        {/* ═══ VALUE PROPOSITION ═══ */}
         <section className="sc-value sc-parallax-section" id="value">
           <img src={IMAGES.fabric} alt="" className="sc-parallax-layer-bg" aria-hidden="true" style={{ opacity: 0.08 }} />
-          <div className="sc-parallax-layer-mid" style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.9) 100%)" }} />
+          <div className="sc-parallax-layer-mid" style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.9) 100%)" }} aria-hidden="true" />
           <div className="sc-value-content sc-parallax-layer-fg">
             <div className="sc-section-label sc-fade-target sc-sticky-title" style={{ letterSpacing: "0.45em" }}>THE SILENTCODE DIFFERENCE</div>
             <h2 className="sc-value-h2 sc-fade-target">BUILT FOR THOSE WHO PREFER ACTIONS OVER WORDS.</h2>
@@ -233,40 +260,53 @@ function SilentCodePage() {
               ))}
             </div>
             <div style={{ marginTop: "60px", display: "flex", flexDirection: "column", alignItems: "center", gap: "16px" }} className="sc-fade-target">
-              <a href="#" className="sc-link-underline">LEARN OUR STORY →</a>
-              <a href="#" className="sc-link-underline">SEE OUR SUSTAINABILITY IMPACT →</a>
+              <a href="/#value" className="sc-link-underline">LEARN OUR STORY →</a>
+              <a href="/#value" className="sc-link-underline">SEE OUR SUSTAINABILITY IMPACT →</a>
             </div>
           </div>
         </section>
 
-        {/* ═══ SECTION 6 — UGC ═══ */}
+        {/* ═══ UGC ═══ */}
         <section className="sc-ugc" id="ugc">
           <div className="sc-section-label sc-fade-target">AS SEEN IN THE WILD</div>
           <h2 className="sc-section-h2 sc-fade-target">WEAR IT YOUR WAY</h2>
           <p className="sc-section-body sc-fade-target">Tag @silentcode on Instagram to be featured.</p>
           <div className="sc-ugc-grid">
             {[IMAGES.ugc1, IMAGES.ugc2, IMAGES.ugc3, IMAGES.ugc4, IMAGES.ugc5].map((img, i) => (
-              <div key={i} className="sc-ugc-tile sc-fade-target" onClick={() => scrollToSection("products")}>
-                <img src={img} alt={`Street style ${i + 1}`} loading="lazy" />
-                <div className="sc-ugc-hover">
+              <button
+                key={i}
+                className="sc-ugc-tile sc-fade-target"
+                onClick={() => scrollToSection("products")}
+                aria-label={`Shop this street style look (${i + 1} of 5)`}
+              >
+                <img src={img} alt={`Street style look ${i + 1} wearing SilentCode`} loading="lazy" width={600} height={600} />
+                <div className="sc-ugc-hover" aria-hidden="true">
                   <span className="sc-ugc-hover-text">SHOP THE LOOK</span>
                   <InstagramMiniIcon />
                 </div>
-              </div>
+              </button>
             ))}
           </div>
           <div style={{ textAlign: "center", marginTop: "50px" }} className="sc-fade-target">
-            <button className="sc-btn-primary">FOLLOW @SILENTCODE</button>
-            <p style={{ fontFamily: "var(--sc-font-body)", fontSize: "13px", color: "#555", marginTop: "14px" }}>
+            <a
+              href="https://instagram.com/silentcode"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="sc-btn-primary"
+              style={{ display: "inline-block" }}
+            >
+              FOLLOW @SILENTCODE
+            </a>
+            <p style={{ fontFamily: "var(--sc-font-body)", fontSize: "13px", color: "#777", marginTop: "14px" }}>
               Join 84,000 followers on Instagram
             </p>
           </div>
         </section>
 
-        {/* ═══ SECTION 7 — EMAIL CAPTURE ═══ */}
+        {/* ═══ EMAIL CAPTURE ═══ */}
         <section className="sc-email sc-parallax-section" id="email">
           <img src={IMAGES.fabric} alt="" className="sc-parallax-layer-bg" aria-hidden="true" style={{ opacity: 0.05 }} />
-          <div className="sc-parallax-layer-mid" style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.95) 100%)" }} />
+          <div className="sc-parallax-layer-mid" style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.95) 100%)" }} aria-hidden="true" />
           <div className="sc-email-content sc-parallax-layer-fg">
             <div className="sc-section-label sc-fade-target" style={{ letterSpacing: "0.45em" }}>JOIN THE CLUB</div>
             <h2 className="sc-email-h2 sc-fade-target">FIRST TO KNOW. FIRST TO WEAR.</h2>
@@ -275,14 +315,17 @@ function SilentCodePage() {
             </p>
             {!emailSubmitted ? (
               <form className="sc-email-row sc-fade-target max-w-lg mx-auto" onSubmit={handleEmailSubmit}>
-                <input 
-                  type="email" 
-                  className="sc-email-input sc-glass bg-white/5 border-white/10 text-white placeholder:text-white/30 px-6 py-4 focus:bg-white/10 transition-all outline-none" 
-                  placeholder="Your email address" 
-                  required 
+                <input
+                  type="email"
+                  className="sc-email-input sc-glass bg-white/5 border-white/10 text-white placeholder:text-white/30 px-6 py-4 focus:bg-white/10 transition-all outline-none"
+                  placeholder="Your email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  aria-label="Email address for newsletter signup"
                 />
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className="sc-email-submit sc-glass bg-white text-black hover:bg-white/90 border-none font-bold tracking-widest px-8"
                 >
                   GET EARLY ACCESS
