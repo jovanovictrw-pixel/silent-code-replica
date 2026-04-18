@@ -3,6 +3,7 @@ import { products } from "../lib/products";
 import { CategoryLayout } from "../components/shared/CategoryLayout";
 import { ProductCard } from "../components/shared/ProductCard";
 import { BundleCard } from "../components/shared/BundleCard";
+import { CategoryFilters } from "../components/shared/CategoryFilters";
 import { useFadeOnScroll } from "../hooks/useFadeOnScroll";
 
 export const Route = createFileRoute("/category/$categoryName")({
@@ -63,11 +64,14 @@ function CategoryPage() {
   const subtitle = subtitles[categoryName.toLowerCase()] || "Explore our latest drops.";
 
   return (
-    <CategoryLayout title={title} subtitle={subtitle}>
+    <CategoryLayout title={title} subtitle={subtitle} categoryName={categoryName}>
       {bundles.length > 0 && (
-        <div className="mb-20">
-          <div className="sc-section-label sc-fade-target mb-8 text-left">STRATEGIC BUNDLES</div>
-          <div className="sc-prod-grid">
+        <div className="mb-32">
+          <div className="flex items-center gap-4 mb-12">
+            <div className="sc-section-label !mb-0">SYSTEM_BUNDLES</div>
+            <div className="flex-1 h-px bg-white/5" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
             {bundles.map((product) => (
               <BundleCard key={product.id} product={product} />
             ))}
@@ -77,12 +81,25 @@ function CategoryPage() {
 
       {essentials.length > 0 && (
         <div>
-          <div className="sc-section-label sc-fade-target mb-8 text-left">
-            {categoryName === "accessories" ? "COLLECTION" : "CORE ESSENTIALS"}
+          <div className="flex items-center gap-4 mb-12">
+            <div className="sc-section-label !mb-0">
+              {categoryName === "accessories" ? "COLLECTION_COMPONENTS" : "CORE_ESSENTIALS"}
+            </div>
+            <div className="flex-1 h-px bg-white/5" />
           </div>
-          <div className="sc-prod-grid-4">
-            {essentials.map((product) => (
-              <ProductCard key={product.id} product={product} />
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-20">
+            {essentials.map((product, idx) => (
+              <div 
+                key={product.id} 
+                className={`sc-fade-target ${
+                  (idx % 5 === 0) ? "md:col-span-2 lg:col-span-2" : ""
+                }`}
+              >
+                <div className={idx % 5 === 0 ? "aspect-[16/9] md:aspect-auto" : ""}>
+                   <ProductCard product={product} />
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -95,6 +112,8 @@ function CategoryPage() {
           </p>
         </div>
       )}
+
+      <CategoryFilters />
     </CategoryLayout>
   );
 }

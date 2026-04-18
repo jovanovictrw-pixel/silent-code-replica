@@ -437,15 +437,55 @@
   font-weight: 600;
   color: #000000;
   background: #FFFFFF;
-  padding: 16px 44px;
-  min-height: 48px;
-  min-width: 44px;
+  padding: 18px 48px;
+  min-height: 52px;
   border: none;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
   text-decoration: none;
+  position: relative;
+  overflow: hidden;
 }
-.sc-btn-primary:hover { background: #DDDDDD; }
+.sc-btn-primary:hover { 
+  background: #F5F0EB;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(255,255,255,0.1);
+}
+
+.sc-btn-hw {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--sc-font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  font-size: 10px;
+  padding: 16px 36px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: white;
+  transition: all 0.4s ease;
+  position: relative;
+}
+.sc-btn-hw::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background: white;
+  transform: scaleY(0);
+  transition: transform 0.4s ease;
+}
+.sc-btn-hw:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.3);
+  padding-left: 44px;
+}
+.sc-btn-hw:hover::before {
+  transform: scaleY(1);
+}
 
 .sc-link-secondary {
   font-family: var(--sc-font-heading);
@@ -532,74 +572,176 @@
   margin-top: 16px;
 }
 
-/* ─── Category Grid ─── */
+/* ─── Category Grid (Premium Staggered) ─── */
 .sc-categories {
   width: 100%;
   background: #000;
-  padding: 80px 40px;
+  padding: 120px 40px;
 }
-.sc-cat-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2px;
-  max-width: 1100px;
-  margin: 50px auto 0;
+.sc-cat-staggered {
+  display: flex;
+  flex-direction: column;
+  gap: 15vh;
+  max-width: 1400px;
+  margin: 80px auto 0;
 }
-@media (max-width: 767px) {
-  .sc-cat-grid { grid-template-columns: 1fr; }
-  .sc-categories { padding: 60px 20px; }
+.sc-cat-row {
+  display: flex;
+  align-items: center;
+  gap: 80px;
+  width: 100%;
 }
-.sc-cat-tile {
+.sc-cat-row:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+.sc-cat-visual {
+  flex: 1.2;
   position: relative;
-  height: 70vh;
+  height: 80vh;
   overflow: hidden;
-  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.05);
 }
-@media (max-width: 767px) {
-  .sc-cat-tile { height: 240px; }
-}
-@media (min-width: 768px) and (max-width: 1024px) {
-  .sc-cat-tile { height: 50vw; }
-}
-.sc-cat-tile img {
+.sc-cat-visual img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.7s ease;
+  transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
 }
-.sc-cat-tile:hover img { transform: scale(1.04); }
-.sc-cat-overlay {
+.sc-cat-visual:hover img {
+  transform: scale(1.08);
+}
+
+.sc-cat-info {
+  flex: 1;
+  position: relative;
+}
+.sc-cat-number {
+  position: absolute;
+  top: -100px;
+  left: -20px;
+  font-family: var(--sc-font-heading);
+  font-size: 250px;
+  font-weight: 600;
+  color: white;
+  opacity: 0.03;
+  pointer-events: none;
+  line-height: 1;
+}
+.sc-cat-row:nth-child(even) .sc-cat-number {
+  left: auto;
+  right: -20px;
+}
+
+.sc-cat-title {
+  font-family: var(--sc-font-heading);
+  font-size: clamp(40px, 6vw, 80px);
+  font-weight: 100;
+  letter-spacing: 0.2em;
+  color: white;
+  margin-bottom: 30px;
+  line-height: 1;
+}
+.sc-cat-desc {
+  font-family: var(--sc-font-body);
+  font-size: 16px;
+  color: #888;
+  max-width: 400px;
+  line-height: 1.8;
+  margin-bottom: 40px;
+}
+
+@media (max-width: 1024px) {
+  .sc-cat-row, .sc-cat-row:nth-child(even) {
+    flex-direction: column;
+    gap: 40px;
+  }
+  .sc-cat-visual {
+    width: 100%;
+    height: 60vh;
+  }
+  .sc-cat-number {
+    font-size: 150px;
+    top: -60px;
+  }
+}
+
+/* ─── Lens Flare Effect ─── */
+.sc-lens-flare {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.35);
-  transition: background 0.5s ease;
+  background: radial-gradient(
+    circle at var(--x, 50%) var(--y, 50%),
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.05) 20%,
+    transparent 50%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
 }
-.sc-cat-tile:hover .sc-cat-overlay { background: rgba(0,0,0,0.55); }
-.sc-cat-content {
-  position: absolute;
-  bottom: 40px;
-  left: 40px;
-  z-index: 2;
+.sc-cat-visual:hover .sc-lens-flare {
+  opacity: 1;
 }
-.sc-cat-label {
+
+/* ─── Hardware Badge ─── */
+.sc-badge-hw {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid rgba(255,255,255,0.15);
   font-family: var(--sc-font-heading);
-  text-transform: uppercase;
-  letter-spacing: 0.4em;
-  font-size: 13px;
+  font-size: 9px;
+  letter-spacing: 0.2em;
   color: white;
-  margin-bottom: 12px;
-}
-.sc-cat-cta {
-  font-family: var(--sc-font-heading);
+  background: rgba(255,255,255,0.03);
   text-transform: uppercase;
-  letter-spacing: 0.3em;
-  font-size: 10px;
-  color: #AAAAAA;
-  text-decoration: none;
-  transition: color 0.3s ease;
-  cursor: pointer;
 }
-.sc-cat-tile:hover .sc-cat-cta { color: white; }
+.sc-badge-hw-dot {
+  width: 4px;
+  height: 4px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #fff;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; scale: 1; }
+  50% { opacity: 0.4; scale: 0.8; }
+}
+
+/* ─── Scanline Effect ─── */
+.sc-scan-wrap {
+  position: relative;
+  overflow: hidden;
+}
+.sc-scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    transparent 50.1%,
+    transparent 100%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.sc-scan-wrap:hover .sc-scanline {
+  opacity: 1;
+  animation: scanMove 4s linear infinite;
+}
+@keyframes scanMove {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(100%); }
+}
 
 /* Shop All Banner */
 .sc-shop-all-banner {
@@ -610,7 +752,7 @@
   padding: 24px 40px;
   cursor: pointer;
   max-width: 1100px;
-  margin: 2px auto 0;
+  margin: 100px auto 0;
 }
 .sc-shop-all-banner:hover .sc-shop-all-text { color: white; }
 .sc-shop-all-line {

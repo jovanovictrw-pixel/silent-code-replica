@@ -27,10 +27,12 @@ export function BundleCard({ product }: BundleCardProps) {
 
   const badge = badgeConfig[product.id as keyof typeof badgeConfig];
 
+  const [schematic, setSchematic] = useState(false);
+
   return (
-    <div className="sc-prod-card vt-card sc-fade-target group border border-white/10 bg-[#050505] overflow-hidden flex flex-col relative">
+    <div className={`sc-prod-card vt-card sc-fade-target group border border-white/10 bg-[#050505] overflow-hidden flex flex-col relative ${schematic ? 'sc-schematic-active' : ''}`}>
       {/* Editorial Image Grid */}
-      <div className="relative h-[520px] w-full grid grid-cols-2 gap-[1px] bg-[#111] overflow-hidden">
+      <div className={`relative h-[520px] w-full grid grid-cols-2 gap-[1px] bg-[#111] overflow-hidden transition-all duration-700 ${schematic ? 'opacity-20 grayscale brightness-150' : ''}`}>
         {/* Left Column: Primary Editorial/Model Shot */}
         <div className="relative overflow-hidden bg-black flex items-center justify-center">
           <img 
@@ -70,15 +72,17 @@ export function BundleCard({ product }: BundleCardProps) {
 
         {/* Technical Overlays */}
         <div className="absolute top-6 left-6 z-20">
-          <div className="sc-glass bg-white/5 text-white text-[9px] px-4 py-1.5 tracking-[0.4em] font-black uppercase skew-x-[-12deg] backdrop-blur-md">
-            <span className="inline-block skew-x-[12deg]">SYSTEM.KIT</span>
+          <div className="sc-badge-hw !bg-white !text-black border-none">
+            <div className="sc-badge-hw-dot !bg-black !shadow-black/50" />
+            SYSTEM_KIT
           </div>
         </div>
 
         <div className="absolute top-6 right-6 z-20">
            {badge?.label && (
-            <div className={`${badge.className} sc-glass bg-white/10 text-[9px] px-4 py-1.5 tracking-[0.4em] font-black uppercase skew-x-[-12deg] shadow-2xl backdrop-blur-md border-white/5`}>
-              <span className="inline-block skew-x-[12deg]">{badge.label}</span>
+            <div className={`sc-badge-hw ${badge.className}`}>
+               <div className="sc-badge-hw-dot" />
+               {badge.label}
             </div>
            )}
         </div>
@@ -86,17 +90,40 @@ export function BundleCard({ product }: BundleCardProps) {
         <ScarcityIndicator status={product.stockStatus} />
       </div>
 
+      {/* Schematic Overlay */}
+      {schematic && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center p-12 pointer-events-none">
+          <div className="w-full h-full border border-white/20 border-dashed rounded-lg flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm">
+             <div className="text-[10px] text-white/40 tracking-[0.5em] mb-4">SCHEMATIC_MODE_ACTIVE</div>
+             <div className="grid grid-cols-2 gap-8 w-full max-w-xs opacity-60">
+                <div className="h-20 border border-white/20" />
+                <div className="h-20 border border-white/20" />
+                <div className="h-20 border border-white/20" />
+                <div className="h-20 border border-white/20" />
+             </div>
+          </div>
+        </div>
+      )}
+
       <div className="sc-prod-info p-7 border-t border-white/5 flex-grow flex flex-col justify-between">
         <div className="mb-8">
-          <h3 className="text-white uppercase tracking-[0.3em] text-[13px] font-black mb-2">{product.name}</h3>
-          <p className="text-[10px] text-white/30 uppercase tracking-[0.1em] font-medium leading-relaxed mb-4">{product.description}</p>
+          <div className="flex justify-between items-start mb-4">
+            <h3 className="text-white uppercase tracking-[0.3em] text-[13px] font-black">{product.name}</h3>
+            <button 
+              onClick={() => setSchematic(!schematic)}
+              className={`text-[8px] tracking-widest font-heading px-3 py-1 border transition-colors ${schematic ? 'bg-white text-black border-white' : 'text-white/40 border-white/10 hover:border-white/30'}`}
+            >
+              {schematic ? 'RENDER_REALITY' : 'VIEW_SCHEMATIC'}
+            </button>
+          </div>
+          <p className="text-[10px] text-white/30 uppercase tracking-[0.1em] font-medium leading-relaxed mb-6">{product.description}</p>
           
           <div className="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-            <span className="text-[7px] text-white/20 uppercase tracking-[0.5em] font-bold">INVENTORY_LIST</span>
+            <span className="text-[7px] text-white/20 uppercase tracking-[0.5em] font-bold">SYSTEM_COMPONENTS</span>
             <div className="flex flex-wrap gap-x-4 gap-y-1">
               {product.details.map((detail, idx) => (
                 <div key={idx} className="flex items-center gap-1.5">
-                  <div className="w-1 h-1 bg-sc-accent" />
+                  <div className="w-1 h-1 bg-white/40" />
                   <span className="text-[9px] text-white/60 uppercase tracking-widest">{detail}</span>
                 </div>
               ))}

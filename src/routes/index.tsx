@@ -107,18 +107,18 @@ function SilentNumenPage() {
             <div className="sc-hero-line" aria-hidden="true" />
             <div className="sc-hero-sublabel">SS 2025 COLLECTION</div>
             <h1 className="sc-hero-h1 vt-heading">SILENCE IS THE LOUDEST STATEMENT.</h1>
-            <div style={{ marginTop: "40px" }} className="flex flex-col md:flex-row gap-4 justify-center items-center">
+            <div style={{ marginTop: "40px" }} className="flex flex-col md:flex-row gap-6 justify-center items-center">
               <button
-                className="sc-btn-primary sc-glass bg-white/10 hover:bg-white/20 text-white border-white/20 backdrop-blur-xl px-12"
-                onClick={() => scrollToSection("products")}
-              >
-                SHOP NEW ARRIVALS
-              </button>
-              <button
-                className="sc-btn-primary bg-white text-black px-12"
+                className="sc-btn-hw"
                 onClick={() => scrollToSection("categories")}
               >
-                COLLECTIONS
+                DISCOVER_SYSTEMS
+              </button>
+              <button
+                className="sc-btn-primary"
+                onClick={() => scrollToSection("products")}
+              >
+                ACQUIRE_NEW_DROPS
               </button>
             </div>
           </div>
@@ -139,30 +139,81 @@ function SilentNumenPage() {
 
         {/* ═══ CATEGORIES ═══ */}
         <section className="sc-categories" id="categories">
-          <div className="sc-section-label sc-sticky-title" style={{ marginBottom: "50px" }}>SHOP BY CATEGORY</div>
-          <div className="sc-cat-grid">
+          <div className="sc-section-label sc-sticky-title" style={{ marginBottom: "100px" }}>DISCOVER COLLECTIONS</div>
+          
+          <div className="sc-cat-staggered">
             {[
-              { label: "MEN", cta: "EXPLORE MEN →", img: IMAGES.men, href: "/category/men" },
-              { label: "WOMEN", cta: "EXPLORE WOMEN →", img: IMAGES.women, href: "/category/women" },
-              { label: "ACCESSORIES", cta: "EXPLORE ACCESSORIES →", img: IMAGES.accessories, href: "/category/accessories" },
-            ].map(cat => (
-              <Link to={cat.href as any} key={cat.label} className="sc-cat-tile sc-fade-target group block relative">
-                <img src={cat.img} alt={`${cat.label} collection`} loading="lazy" width={800} height={1000} className="w-full h-full object-cover" />
-                <div className="sc-cat-overlay bg-black/20 group-hover:bg-black/40 transition-all duration-700" aria-hidden="true" />
-                <div className="sc-cat-content sc-glass bg-white/5 backdrop-blur-xl border-white/10 p-8 absolute bottom-10 left-10 right-10 md:left-auto md:w-64 z-10 transition-all duration-500 group-hover:bg-white/10">
-                  <div className="sc-cat-label text-white !mb-4">{cat.label}</div>
-                  <span className="sc-cat-cta text-white/50 group-hover:text-white transition-colors">{cat.cta}</span>
+              { 
+                num: "01",
+                label: "MEN", 
+                desc: "Brutalist silhouettes, structured outerwear, and tapered bottoms engineered for the urban environment.",
+                cta: "EXPLORE MEN →", 
+                img: IMAGES.men, 
+                href: "/category/men" 
+              },
+              { 
+                num: "02",
+                label: "WOMEN", 
+                desc: "Neo-grunge aesthetics balanced with high-fashion drapes and precision-cut technical fabrics.",
+                cta: "EXPLORE WOMEN →", 
+                img: IMAGES.women, 
+                href: "/category/women" 
+              },
+              { 
+                num: "03",
+                label: "ACCESSORIES", 
+                desc: "Industrial-grade hardware and modular carry systems designed to complement the minimalist uniform.",
+                cta: "EXPLORE ACCESSORIES →", 
+                img: IMAGES.accessories, 
+                href: "/category/accessories" 
+              },
+            ].map((cat) => (
+              <div key={cat.label} className="sc-cat-row sc-fade-target">
+                <div 
+                  className="sc-cat-visual group"
+                  onMouseMove={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const x = ((e.clientX - rect.left) / rect.width) * 100;
+                    const y = ((e.clientY - rect.top) / rect.height) * 100;
+                    e.currentTarget.style.setProperty('--x', `${x}%`);
+                    e.currentTarget.style.setProperty('--y', `${y}%`);
+                  }}
+                >
+                  <Link to={cat.href as any} className="block w-full h-full">
+                    <img 
+                      src={cat.img} 
+                      alt={`${cat.label} collection`} 
+                      loading="lazy" 
+                      width={1200} 
+                      height={1600} 
+                    />
+                    <div className="sc-lens-flare" />
+                  </Link>
                 </div>
-              </Link>
+                
+                <div className="sc-cat-info">
+                  <div className="sc-cat-number">{cat.num}</div>
+                  <div className="sc-cat-label !mb-2">CATEGORY_{cat.num}</div>
+                  <h3 className="sc-cat-title">{cat.label}</h3>
+                  <p className="sc-cat-desc">{cat.desc}</p>
+                  <Link 
+                    to={cat.href as any} 
+                    className="sc-btn-primary sc-glass bg-white/5 border-white/10 text-white hover:bg-white/10"
+                  >
+                    {cat.cta}
+                  </Link>
+                </div>
+              </div>
             ))}
           </div>
+
           <button
             className="sc-shop-all-banner sc-fade-target"
             onClick={() => scrollToSection("products")}
             aria-label="View the full collection"
           >
             <div className="sc-shop-all-line" aria-hidden="true" />
-            <div className="sc-shop-all-text">VIEW THE FULL COLLECTION</div>
+            <div className="sc-shop-all-text">VIEW ALL SYSTEMS [SS25]</div>
             <div className="sc-shop-all-line" aria-hidden="true" />
           </button>
         </section>
